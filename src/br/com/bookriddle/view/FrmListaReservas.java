@@ -1,0 +1,733 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package br.com.bookriddle.view;
+
+import br.com.bookriddle.controller.LivroDao;
+import br.com.bookriddle.controller.ReservaDao;
+import br.com.bookriddle.interfaces.ScreenConfig;
+import br.com.bookriddle.interfaces.ListagemModel;
+import br.com.bookriddle.model.Livro;
+import br.com.bookriddle.model.Reserva;
+import br.com.bookriddle.model.Supervisor;
+import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+/**
+ *
+ * @author Marcos Vinícius Brás de Oliveira
+ */
+public class FrmListaReservas extends javax.swing.JFrame implements ScreenConfig, ListagemModel {
+
+    /**
+     * Creates new form FrmPrincipal
+     */
+    private DefaultTableModel modelo;
+    private ArrayList<Reserva> listReservas;
+    private Supervisor supervisor;
+    private String[] campo = new String[]{"todos", "livro.titulo", "funcionario.nome"};
+
+    public FrmListaReservas() {
+        initComponents();
+    }
+
+    public FrmListaReservas(Supervisor supervisor) {
+        frameConfig();
+        initComponents();
+        this.supervisor = supervisor;
+        modelo = (DefaultTableModel) tabela_reserva.getModel();
+        ReservaDao dao = new ReservaDao();
+        listReservas = (ArrayList<Reserva>) dao.buscarTodos("where status_reserva != 0 order by data");
+        dao.closeConnection();
+        atualizarTabela();
+    }
+
+    @Override
+    public void frameConfig() {
+        FrmListaReservas.this.setUndecorated(true);
+        this.setExtendedState(FrmMenu.MAXIMIZED_BOTH);
+
+        try {
+            this.setIconImage(ImageIO.read(new File("src/br/com/bookriddle/imagens/liphia_icon.png")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void atualizarTabela() {
+        modelo.setRowCount(0);
+
+        for (Reserva r : listReservas) {
+            String funcionario = r.getInfo()[0];
+            String livro = r.getInfo()[1];
+            
+            String dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(r.getData());
+            modelo.addRow(new String[]{dataFormatada, livro, funcionario});
+        }
+    }
+
+    @Override
+    public boolean isSelected() {
+        int count = tabela_reserva.getSelectedRowCount();
+
+        if (count > 0) {
+            if (count == 1) {
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "Selecione apenas uma reserva");
+                return false;
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione uma reserva");
+            return false;
+        }
+    }
+
+    @Override
+    public void setList(ArrayList<?> list) {
+        this.listReservas = (ArrayList<Reserva>) list;
+        atualizarTabela();
+    }
+    
+    @Override
+    public void verDetalhes() {
+        if (isSelected()) {
+            int idx = tabela_reserva.getSelectedRow();
+            String clause = "where id = " + listReservas.get(idx).getIdLivro();
+            Livro livro = (Livro) new LivroDao().buscar(clause);
+            new FrmVerLivro(livro, null).setVisible(true);
+        }
+    }
+    
+    private void buscarReservas() {
+        String busca = txt_busca.getText();
+        ReservaDao rDao = null;
+        
+        String complemento = "";
+        
+        int i = cb_complemento.getSelectedIndex();
+        
+        if(i == 0) {
+            complemento = " order by data";
+        } else {
+            complemento = " order by data desc";
+        }
+
+        int idx = cb_condicao.getSelectedIndex();
+        String clause = null;
+
+        if (!busca.equals("")) {
+            if (idx == 0) {
+                clause = "where (" + campo[1] + " like '%" + busca + "%' or " + campo[2]
+                        + " like '%" + busca + "%') and (reserva.status_reserva != 0)";
+            } else {
+                clause = "where (" + campo[idx] + " like '%" + busca + "%') and (reserva.status_reserva != 0)";
+            }
+            
+            clause += complemento;
+            
+            rDao = new ReservaDao();
+            listReservas = (ArrayList<Reserva>) rDao.buscarTodos(clause);
+            rDao.closeConnection();
+        } else {
+            rDao = new ReservaDao();
+            listReservas = (ArrayList<Reserva>) rDao.buscarTodos("where reserva.status_reserva != 0" + complemento);
+            rDao.closeConnection();
+        }
+
+        atualizarTabela();
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabela_reserva = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+        btn_plus1 = new javax.swing.JPanel();
+        btn_voltar = new javax.swing.JPanel();
+        lbl_voltar = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        btn_excluir = new javax.swing.JPanel();
+        lbl_excluir = new javax.swing.JLabel();
+        btn_detalhes = new javax.swing.JPanel();
+        lbl_detalhes = new javax.swing.JLabel();
+        btn_concluir = new javax.swing.JPanel();
+        lbl_concluir = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        cb_condicao = new javax.swing.JComboBox();
+        txt_busca = new java.awt.TextField();
+        jLabel5 = new javax.swing.JLabel();
+        cb_complemento = new javax.swing.JComboBox();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Liphia - Busca de Livros");
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        jPanel1.setBackground(new java.awt.Color(237, 250, 251));
+
+        tabela_reserva.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        tabela_reserva.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Data", "Livro", "Funcionário"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tabela_reserva.getTableHeader().setReorderingAllowed(false);
+        tabela_reserva.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabela_reservaMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tabela_reserva);
+        if (tabela_reserva.getColumnModel().getColumnCount() > 0) {
+            tabela_reserva.getColumnModel().getColumn(0).setResizable(false);
+            tabela_reserva.getColumnModel().getColumn(0).setPreferredWidth(20);
+            tabela_reserva.getColumnModel().getColumn(1).setResizable(false);
+            tabela_reserva.getColumnModel().getColumn(1).setPreferredWidth(20);
+            tabela_reserva.getColumnModel().getColumn(2).setResizable(false);
+            tabela_reserva.getColumnModel().getColumn(2).setPreferredWidth(100);
+        }
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Controle de Reservas");
+
+        btn_plus1.setBackground(new java.awt.Color(227, 6, 19));
+        btn_plus1.setPreferredSize(new java.awt.Dimension(196, 29));
+
+        btn_voltar.setBackground(new java.awt.Color(227, 6, 19));
+        btn_voltar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_voltarMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_voltarMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_voltarMouseExited(evt);
+            }
+        });
+
+        lbl_voltar.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
+        lbl_voltar.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_voltar.setText("Voltar");
+
+        javax.swing.GroupLayout btn_voltarLayout = new javax.swing.GroupLayout(btn_voltar);
+        btn_voltar.setLayout(btn_voltarLayout);
+        btn_voltarLayout.setHorizontalGroup(
+            btn_voltarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, btn_voltarLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbl_voltar)
+                .addGap(160, 160, 160))
+        );
+        btn_voltarLayout.setVerticalGroup(
+            btn_voltarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lbl_voltar, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+        );
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/bookriddle/imagens/logo_senai.png"))); // NOI18N
+
+        jPanel2.setBackground(new java.awt.Color(227, 6, 19));
+
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/bookriddle/imagens/white_brlogo_small.png"))); // NOI18N
+
+        jLabel7.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Book Riddle Project 2015");
+
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("SENAI Belo Horizonte CETEL César Rodrigues");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel7)
+                .addGap(123, 123, 123))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(79, 79, 79)
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(44, 44, 44))
+        );
+
+        btn_excluir.setBackground(new java.awt.Color(227, 6, 19));
+        btn_excluir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_excluirMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_excluirMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_excluirMouseExited(evt);
+            }
+        });
+
+        lbl_excluir.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
+        lbl_excluir.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_excluir.setText("Excluir");
+
+        javax.swing.GroupLayout btn_excluirLayout = new javax.swing.GroupLayout(btn_excluir);
+        btn_excluir.setLayout(btn_excluirLayout);
+        btn_excluirLayout.setHorizontalGroup(
+            btn_excluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btn_excluirLayout.createSequentialGroup()
+                .addGap(192, 192, 192)
+                .addComponent(lbl_excluir)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        btn_excluirLayout.setVerticalGroup(
+            btn_excluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lbl_excluir, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+        );
+
+        btn_detalhes.setBackground(new java.awt.Color(227, 6, 19));
+        btn_detalhes.setPreferredSize(new java.awt.Dimension(196, 29));
+        btn_detalhes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_detalhesMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_detalhesMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_detalhesMouseExited(evt);
+            }
+        });
+
+        lbl_detalhes.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
+        lbl_detalhes.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_detalhes.setText("Detalhes do Livro");
+
+        javax.swing.GroupLayout btn_detalhesLayout = new javax.swing.GroupLayout(btn_detalhes);
+        btn_detalhes.setLayout(btn_detalhesLayout);
+        btn_detalhesLayout.setHorizontalGroup(
+            btn_detalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btn_detalhesLayout.createSequentialGroup()
+                .addGap(133, 133, 133)
+                .addComponent(lbl_detalhes)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        btn_detalhesLayout.setVerticalGroup(
+            btn_detalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lbl_detalhes, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+        );
+
+        btn_concluir.setBackground(new java.awt.Color(227, 6, 19));
+        btn_concluir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_concluirMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_concluirMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_concluirMouseExited(evt);
+            }
+        });
+
+        lbl_concluir.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
+        lbl_concluir.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_concluir.setText("Concluir Empréstimo");
+
+        javax.swing.GroupLayout btn_concluirLayout = new javax.swing.GroupLayout(btn_concluir);
+        btn_concluir.setLayout(btn_concluirLayout);
+        btn_concluirLayout.setHorizontalGroup(
+            btn_concluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, btn_concluirLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbl_concluir)
+                .addGap(85, 85, 85))
+        );
+        btn_concluirLayout.setVerticalGroup(
+            btn_concluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lbl_concluir, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout btn_plus1Layout = new javax.swing.GroupLayout(btn_plus1);
+        btn_plus1.setLayout(btn_plus1Layout);
+        btn_plus1Layout.setHorizontalGroup(
+            btn_plus1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
+            .addComponent(btn_voltar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btn_excluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btn_detalhes, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
+            .addComponent(btn_concluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        btn_plus1Layout.setVerticalGroup(
+            btn_plus1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, btn_plus1Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
+                .addComponent(btn_concluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(btn_detalhes, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_excluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(94, 94, 94)
+                .addComponent(btn_voltar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel3.setText("Pesquisar por");
+
+        cb_condicao.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        cb_condicao.setForeground(new java.awt.Color(51, 51, 51));
+        cb_condicao.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Todos", "Livro", "Funcionário" }));
+        cb_condicao.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cb_condicaoItemStateChanged(evt);
+            }
+        });
+
+        txt_busca.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txt_busca.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txt_busca.addTextListener(new java.awt.event.TextListener() {
+            public void textValueChanged(java.awt.event.TextEvent evt) {
+                txt_buscaTextValueChanged(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel5.setText("Ordenar por");
+
+        cb_complemento.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        cb_complemento.setForeground(new java.awt.Color(51, 51, 51));
+        cb_complemento.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Mais Antigos", "Mais Recentes" }));
+        cb_complemento.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cb_complementoItemStateChanged(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(btn_plus1, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 716, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cb_condicao, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txt_busca, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cb_complemento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(48, 48, 48)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cb_condicao, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_busca, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cb_complemento, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 488, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(btn_plus1, javax.swing.GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btn_detalhesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_detalhesMouseClicked
+        verDetalhes();
+    }//GEN-LAST:event_btn_detalhesMouseClicked
+
+    private void btn_detalhesMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_detalhesMouseEntered
+        btn_detalhes.setBackground(new Color(237, 250, 251));
+        lbl_detalhes.setForeground(new Color(227, 6, 19));
+    }//GEN-LAST:event_btn_detalhesMouseEntered
+
+    private void btn_detalhesMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_detalhesMouseExited
+        btn_detalhes.setBackground(new Color(227, 6, 19));
+        lbl_detalhes.setForeground(new Color(255, 255, 255));
+    }//GEN-LAST:event_btn_detalhesMouseExited
+
+    private void btn_concluirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_concluirMouseClicked
+        if (isSelected()) {
+            int row = tabela_reserva.getSelectedRow();
+            Reserva reserva = listReservas.get(row);
+            new FrmEmprestimo(this, reserva, supervisor).setVisible(true);
+        }
+    }//GEN-LAST:event_btn_concluirMouseClicked
+
+    private void btn_concluirMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_concluirMouseEntered
+        btn_concluir.setBackground(new Color(237, 250, 251));
+        lbl_concluir.setForeground(new Color(227, 6, 19));
+    }//GEN-LAST:event_btn_concluirMouseEntered
+
+    private void btn_concluirMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_concluirMouseExited
+        btn_concluir.setBackground(new Color(227, 6, 19));
+        lbl_concluir.setForeground(new Color(255, 255, 255));
+    }//GEN-LAST:event_btn_concluirMouseExited
+
+    private void btn_excluirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_excluirMouseClicked
+        if(isSelected()) {
+            int result = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir esta reserva?");
+            
+            if(result == 0) {
+                int row = tabela_reserva.getSelectedRow();
+                Reserva reserva = listReservas.get(row);
+                reserva.setStatus(0);
+                ReservaDao dao = new ReservaDao(reserva);
+                dao.editar();
+                listReservas = (ArrayList<Reserva>) dao.buscarTodos("where status_reserva != 0");
+                dao.closeConnection();
+                atualizarTabela();
+                JOptionPane.showMessageDialog(null, "Reserva excluída com sucesso");
+            }
+        }
+    }//GEN-LAST:event_btn_excluirMouseClicked
+
+    private void btn_excluirMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_excluirMouseEntered
+        btn_excluir.setBackground(new Color(237, 250, 251));
+        lbl_excluir.setForeground(new Color(227, 6, 19));
+    }//GEN-LAST:event_btn_excluirMouseEntered
+
+    private void btn_excluirMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_excluirMouseExited
+        btn_excluir.setBackground(new Color(227, 6, 19));
+        lbl_excluir.setForeground(new Color(255, 255, 255));
+    }//GEN-LAST:event_btn_excluirMouseExited
+
+    private void btn_voltarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_voltarMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_btn_voltarMouseClicked
+
+    private void btn_voltarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_voltarMouseEntered
+        btn_voltar.setBackground(new Color(237, 250, 251));
+        lbl_voltar.setForeground(new Color(227, 6, 19));
+    }//GEN-LAST:event_btn_voltarMouseEntered
+
+    private void btn_voltarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_voltarMouseExited
+        btn_voltar.setBackground(new Color(227, 6, 19));
+        lbl_voltar.setForeground(new Color(255, 255, 255));
+    }//GEN-LAST:event_btn_voltarMouseExited
+
+    private void tabela_reservaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabela_reservaMouseClicked
+        if(evt.getClickCount() == 2) {
+            verDetalhes();
+        }
+    }//GEN-LAST:event_tabela_reservaMouseClicked
+
+    private void cb_condicaoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_condicaoItemStateChanged
+        buscarReservas();
+    }//GEN-LAST:event_cb_condicaoItemStateChanged
+
+    private void txt_buscaTextValueChanged(java.awt.event.TextEvent evt) {//GEN-FIRST:event_txt_buscaTextValueChanged
+        buscarReservas();
+    }//GEN-LAST:event_txt_buscaTextValueChanged
+
+    private void cb_complementoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_complementoItemStateChanged
+        buscarReservas();
+    }//GEN-LAST:event_cb_complementoItemStateChanged
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(FrmListaReservas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(FrmListaReservas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(FrmListaReservas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(FrmListaReservas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new FrmListaReservas().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel btn_concluir;
+    private javax.swing.JPanel btn_detalhes;
+    private javax.swing.JPanel btn_excluir;
+    private javax.swing.JPanel btn_plus1;
+    private javax.swing.JPanel btn_voltar;
+    private javax.swing.JComboBox cb_complemento;
+    private javax.swing.JComboBox cb_condicao;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lbl_concluir;
+    private javax.swing.JLabel lbl_detalhes;
+    private javax.swing.JLabel lbl_excluir;
+    private javax.swing.JLabel lbl_voltar;
+    private javax.swing.JTable tabela_reserva;
+    private java.awt.TextField txt_busca;
+    // End of variables declaration//GEN-END:variables
+
+}
