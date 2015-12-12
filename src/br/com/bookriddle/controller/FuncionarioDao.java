@@ -65,15 +65,17 @@ public class FuncionarioDao implements DBModel {
     }
 
     @Override
-    public void excluir() {
+    public boolean excluir() {
         String sql = "update " + TABELA_FUNCIONARIO + " set status_funcionario = 0 where matricula = " + funcionario.getMatricula();
         try {
             Statement stm = conn.createStatement();
             stm.executeUpdate(sql);
             stm.close();
             JOptionPane.showMessageDialog(null, "Funcionário excluído com sucesso");
+            return true;
         } catch(SQLException ex) {
             ex.printStackTrace();
+            return false;
         }
     }
 
@@ -162,7 +164,38 @@ public class FuncionarioDao implements DBModel {
         ArrayList<?> genericList = (ArrayList<Funcionario>)listFun;
         return genericList;
     }
+    
+    @Override
+    public Integer countRegisters(String clause) {
+        String sql = "select count(matricula) as count from " + TABELA_FUNCIONARIO + " " + clause;
+        int count = 0;
 
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            
+            while(rs.next()) {
+                count = rs.getInt("count");
+            }
+            
+            stm.close();
+            rs.close();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return count;
+    }
+    
+    @Override
+    public void connect() {
+        try {
+            conn = BookRiddleDB.getConnection();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
     @Override
     public void closeConnection() {
         try {
@@ -172,14 +205,5 @@ public class FuncionarioDao implements DBModel {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void connect() {
-        try {
-            conn = BookRiddleDB.getConnection();
-        } catch(SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
+    }   
 }

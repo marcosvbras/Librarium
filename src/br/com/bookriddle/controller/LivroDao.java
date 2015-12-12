@@ -58,7 +58,7 @@ public class LivroDao implements DBModel {
     }
 
     @Override
-    public void excluir() {
+    public boolean excluir() {
         String sql = "update " + TABELA_LIVRO + " set status_livro = 0 where id = " + livro.getId();
         
         try {
@@ -67,8 +67,10 @@ public class LivroDao implements DBModel {
             stm.close();
             excluirImagem();
             JOptionPane.showMessageDialog(null, "Livro excluído com sucesso");
+            return true;
         } catch(SQLException ex) {
             ex.printStackTrace();
+            return false;
         }
     }
     
@@ -169,7 +171,38 @@ public class LivroDao implements DBModel {
         ArrayList<?> genericList = (ArrayList<Livro>) listLivro;
         return genericList;
     }
+    
+    @Override
+    public Integer countRegisters(String clause) {
+        String sql = "select count(id) as count from " + TABELA_LIVRO + " " + clause;
+        int count = 0;
 
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            
+            while(rs.next()) {
+                count = rs.getInt("count");
+            }
+            
+            stm.close();
+            rs.close();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return count;
+    }
+    
+    @Override
+    public void connect() {
+        try {
+            conn = BookRiddleDB.getConnection();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
     @Override
     public void closeConnection() {
         try {
@@ -179,14 +212,5 @@ public class LivroDao implements DBModel {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void connect() {
-        try {
-            conn = BookRiddleDB.getConnection();
-        } catch(SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
+    }    
 }

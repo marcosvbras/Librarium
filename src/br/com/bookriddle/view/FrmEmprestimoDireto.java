@@ -12,7 +12,6 @@ import br.com.bookriddle.interfaces.ScreenConfig;
 import br.com.bookriddle.model.Emprestimo;
 import br.com.bookriddle.model.Funcionario;
 import br.com.bookriddle.model.Livro;
-import br.com.bookriddle.model.Reserva;
 import br.com.bookriddle.model.Supervisor;
 import br.com.bookriddle.utilities.DateConvert;
 import java.awt.Color;
@@ -580,7 +579,7 @@ public class FrmEmprestimoDireto extends javax.swing.JFrame implements ScreenCon
                 btn_concluir.setVisible(false);
             } else { // Se não, foi chamado o segundo construtor, ao qual permite edição
                 ReservaDao rDao = new ReservaDao();
-                int count = rDao.countReserva("where livro_id = " + emprestimo.getIdLivro());
+                int count = rDao.countRegisters("where livro_id = " + emprestimo.getIdLivro());
                 
                 emprestimo.setMatriculaFuncionario(funcionario.getMatricula());
                 emprestimo.setMatriculaSupervisor(supervisor.getMatricula());

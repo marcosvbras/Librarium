@@ -15,7 +15,7 @@ public interface DBModel {
     
     public boolean editar();
     
-    public void excluir();
+    public boolean excluir();
     
     public boolean inserir();
     
@@ -23,7 +23,10 @@ public interface DBModel {
     
     public ArrayList<?> buscarTodos(String clause);
     
-    public void closeConnection();
+    public Integer countRegisters(String clause);
     
     public void connect();
+    
+    public void closeConnection();
+  
 }

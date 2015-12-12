@@ -12,11 +12,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -55,8 +51,8 @@ public class ReservaDao implements DBModel {
     }
 
     @Override
-    public void excluir() {
-        
+    public boolean excluir() {
+        return false;
     }
 
     @Override
@@ -143,26 +139,7 @@ public class ReservaDao implements DBModel {
     }
     
     @Override
-    public void closeConnection() {
-        try {
-            if (conn != null) {
-                conn.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void connect() {
-        try {
-            conn = BookRiddleDB.getConnection();
-        } catch(SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-    
-    public Integer countReserva(String clause) {
+    public Integer countRegisters(String clause) {
         String sql = "select count(id) as count from " + TABELA_RESERVA + " " + clause;
         int count = 0;
         try {
@@ -180,5 +157,25 @@ public class ReservaDao implements DBModel {
         }
         
         return count;
+    }
+    
+    @Override
+    public void connect() {
+        try {
+            conn = BookRiddleDB.getConnection();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    @Override
+    public void closeConnection() {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

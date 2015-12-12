@@ -54,7 +54,7 @@ public class EmprestimoDao implements DBModel {
     }
 
     @Override
-    public void excluir() {
+    public boolean excluir() {
         String sql = "update " + TABELA_EMPRESTIMO + " set status_emprestimo = 0 where id = " + emprestimo.getId();
         
         try {
@@ -62,8 +62,10 @@ public class EmprestimoDao implements DBModel {
             stm.executeUpdate(sql);
             stm.close();
             JOptionPane.showMessageDialog(null, "Empréstimo excluído com sucesso");
+            return true;
         } catch(SQLException ex) {
             ex.printStackTrace();
+            return false;
         }
     }
 
@@ -176,28 +178,9 @@ public class EmprestimoDao implements DBModel {
         ArrayList<?> genericList = (ArrayList<Emprestimo>)listEmp;
         return genericList;
     }
-
-    @Override
-    public void closeConnection() {
-        try {
-            if (conn != null) {
-                conn.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void connect() {
-        try {
-            conn = BookRiddleDB.getConnection();
-        } catch(SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
     
-    public Integer countEmprestimo(String clause) {
+    @Override
+    public Integer countRegisters(String clause) {
         String sql = "select count(id) as count from " + TABELA_EMPRESTIMO + " " + clause;
         int count = 0;
 
@@ -217,4 +200,24 @@ public class EmprestimoDao implements DBModel {
         
         return count;
     }
+    
+    @Override
+    public void connect() {
+        try {
+            conn = BookRiddleDB.getConnection();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    @Override
+    public void closeConnection() {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }   
 }

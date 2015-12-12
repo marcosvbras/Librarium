@@ -127,7 +127,7 @@ public class SupervisorDao implements DBModel {
     }
 
     @Override
-    public void excluir() {
+    public boolean excluir() {
         String sql = "update " + TABELA_SUPERVISOR + " set status_supervisor = " + 0 + " where login = '" + supervisor.getLogin() + "'";
         
         try {
@@ -135,8 +135,10 @@ public class SupervisorDao implements DBModel {
             stm.executeUpdate(sql);
             stm.close();
             JOptionPane.showMessageDialog(null, "Usuário excluído com sucesso");
+            return true;
         } catch(SQLException ex) {
             ex.printStackTrace();
+            return false;
         }
     }
 
@@ -225,16 +227,26 @@ public class SupervisorDao implements DBModel {
     }
     
     @Override
-    public void closeConnection() {
+    public Integer countRegisters(String clause) {
+        String sql = "select count(login) as count from " + TABELA_SUPERVISOR + " " + clause;
+        int count = 0;
         try {
-            if (conn != null) {
-                conn.close();
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            
+            while(rs.next()) {
+                count = rs.getInt("count");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            
+            stm.close();
+            rs.close();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
         }
+        
+        return count;
     }
-
+    
     @Override
     public void connect() {
         try {
@@ -243,6 +255,17 @@ public class SupervisorDao implements DBModel {
             ex.printStackTrace();
         }
     }
+    
+    @Override
+    public void closeConnection() {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    } 
 }
 
 

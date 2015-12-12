@@ -6,21 +6,13 @@
 package br.com.bookriddle.view;
 
 import br.com.bookriddle.controller.EmprestimoDao;
-import br.com.bookriddle.controller.FuncionarioDao;
 import br.com.bookriddle.controller.ReservaDao;
 import br.com.bookriddle.interfaces.ScreenConfig;
-import br.com.bookriddle.interfaces.ListagemModel;
-import br.com.bookriddle.model.Funcionario;
-import br.com.bookriddle.model.Supervisor;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -47,15 +39,15 @@ public class FrmResumo extends javax.swing.JFrame implements ScreenConfig {
         String complemento = "'%" + ano + "-" + mes + "%'";
         
         ReservaDao rDao = new ReservaDao();
-        lbl_total_reserva.setText("" + rDao.countReserva(""));
-        lbl_reserva_mes.setText("" + rDao.countReserva("where data like " + complemento));
+        lbl_total_reserva.setText("" + rDao.countRegisters(""));
+        lbl_reserva_mes.setText("" + rDao.countRegisters("where data like " + complemento));
         rDao.closeConnection();
         
         EmprestimoDao eDao = new EmprestimoDao();
-        lbl_total_emprestimo.setText("" + eDao.countEmprestimo(""));
-        lbl_emprestimo_mes.setText("" + eDao.countEmprestimo("where data_emprestimo like " + complemento));
+        lbl_total_emprestimo.setText("" + eDao.countRegisters(""));
+        lbl_emprestimo_mes.setText("" + eDao.countRegisters("where data_emprestimo like " + complemento));
         lbl_livro_popular.setText(eDao.buscarMaisPopular());
-        lbl_livros_pendentes.setText("" + eDao.countEmprestimo("where status_devolucao = 1"));
+        lbl_livros_pendentes.setText("" + eDao.countRegisters("where status_devolucao = 1"));
         eDao.closeConnection();
     }
     
