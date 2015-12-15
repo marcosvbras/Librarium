@@ -34,7 +34,7 @@ public class AutorDao implements DBModel {
     
     @Override
     public boolean editar() {
-        String sql = "update " + TABELA_AUTOR + " set nome = '" + autor.getNome() + "' where id = " + autor.getId();
+        String sql = "update " + TABELA_AUTOR + " set nome = '" + autor.getNome() + "', status_autor = " + autor.getStatusAutor() + " where id = " + autor.getId();
                         
         try {
             Statement stm = conn.createStatement();
@@ -54,7 +54,7 @@ public class AutorDao implements DBModel {
 
     @Override
     public boolean inserir() {
-        String sql = "insert into " + TABELA_AUTOR + " values(null, '" + autor.getNome() + "')";
+        String sql = "insert into " + TABELA_AUTOR + " values(null, '" + autor.getNome() + "', " + autor.getStatusAutor() + ")";
     
         try {
             Statement stm = conn.createStatement();
@@ -80,6 +80,7 @@ public class AutorDao implements DBModel {
                 a = new Autor();
                 a.setId(rs.getInt("id"));
                 a.setNome(rs.getString("nome"));
+                a.setStatusAutor(rs.getInt("status_autor"));
             }
             
             stm.close();
@@ -107,6 +108,7 @@ public class AutorDao implements DBModel {
                 a = new Autor();
                 a.setId(rs.getInt("id"));
                 a.setNome(rs.getString("nome"));
+                a.setStatusAutor(rs.getInt("status_autor"));
                 listAutor.add(a);
             }
             

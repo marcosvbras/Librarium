@@ -5,19 +5,12 @@
  */
 package br.com.bookriddle.view;
 
-import br.com.bookriddle.controller.FuncionarioDao;
 import br.com.bookriddle.controller.SupervisorDao;
-import br.com.bookriddle.interfaces.ScreenConfig;
 import br.com.bookriddle.model.Funcionario;
 import br.com.bookriddle.model.Supervisor;
 import br.com.bookriddle.utilities.MailSender;
 import java.awt.Color;
-import java.io.File;
-import java.io.IOException;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.mail.MessagingException;
 import javax.swing.JOptionPane;
 
@@ -25,13 +18,13 @@ import javax.swing.JOptionPane;
  *
  * @author Marcos Vinícius Brás de Oliveira
  */
-public class FrmRecuperarSenha extends javax.swing.JFrame implements ScreenConfig {
+public class FrmRecuperarSenha extends javax.swing.JFrame {
 
     /**
      * Creates new form FrmPrincipal
      */
     
-    private FrmPrincipal principal;
+    private FrmInicial principal;
     private Supervisor supervisor;
     private SupervisorDao safaDao;
     private Funcionario funcionario;
@@ -39,23 +32,12 @@ public class FrmRecuperarSenha extends javax.swing.JFrame implements ScreenConfi
     
     public FrmRecuperarSenha() {
         initComponents();
-        frameConfig();
+        setLocationRelativeTo(null);
         txt_email.setEnabled(false);
         btn_send.setVisible(false);
         txt_password.setEnabled(false);
         txt_password_repeat.setEnabled(false);
         lbl_salvar.setForeground(new Color(227,6,19));
-    }
-    
-    @Override
-    public void frameConfig() {
-        this.setLocationRelativeTo(null);
-        
-        try {
-            this.setIconImage(ImageIO.read(new File("src/br/com/bookriddle/imagens/liphia_icon.png")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
     
     private String senhaToString(char[] pass) {

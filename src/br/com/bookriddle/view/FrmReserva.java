@@ -7,7 +7,6 @@ package br.com.bookriddle.view;
 
 import br.com.bookriddle.controller.LivroDao;
 import br.com.bookriddle.controller.ReservaDao;
-import br.com.bookriddle.interfaces.ScreenConfig;
 import br.com.bookriddle.interfaces.Verificacao;
 import br.com.bookriddle.model.Livro;
 import br.com.bookriddle.model.Reserva;
@@ -19,24 +18,24 @@ import javax.swing.JOptionPane;
  *
  * @author Aluno Manha
  */
-public class FrmReserva extends javax.swing.JFrame implements Verificacao, ScreenConfig {
+public class FrmReserva extends javax.swing.JFrame implements Verificacao {
 
     /**
      * Creates new form FrmReserva1
      */
     private Livro l;
-    private FrmListaLivro busca;
+    private FrmControleLivro busca;
 
     public FrmReserva() {
         initComponents();
     }
 
-    public FrmReserva(Livro l, FrmListaLivro busca) {
+    public FrmReserva(Livro l, FrmControleLivro busca) {
         initComponents();
-        frameConfig();
+        setLocationRelativeTo(null);
         this.l = l;
         label_livro.setText(l.getTitulo());
-        label_autor.setText(l.getAutor());
+        label_autor.setText(l.getInfo()[0]);
         this.busca = busca;
     }
 
@@ -47,11 +46,6 @@ public class FrmReserva extends javax.swing.JFrame implements Verificacao, Scree
         } else {
             return false;
         }
-    }
-
-    @Override
-    public void frameConfig() {
-        this.setLocationRelativeTo(null);
     }
 
     /**

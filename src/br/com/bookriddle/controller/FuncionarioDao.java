@@ -99,7 +99,9 @@ public class FuncionarioDao implements DBModel {
     
     private void enviarEmail() {
         String assunto = "Cadastro Book Riddle";
-        String mensagem = "Olá, " + funcionario.getNome() + ".\nVocê foi cadastrado com sucesso no Book Riddle.";
+        
+        String mensagem = "<center><div><img src=\"http://i.imgur.com/xMtd6h4.jpg\"><p>Por favor, não responda este e-mail!</p>" +
+        "<p>Olá " + funcionario.getNome() + ",<br> você foi cadastrado no sistema Book Riddle.</p><center><img src=\"http://i.imgur.com/YRs2QJX.jpg\"></div></center>";
         try {
             MailSender.sendMail(funcionario.getEmail(), assunto, mensagem);
         } catch (Exception ex) {

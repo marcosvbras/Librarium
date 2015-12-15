@@ -6,11 +6,8 @@
 package br.com.bookriddle.view;
 
 import br.com.bookriddle.controller.EmprestimoDao;
-import br.com.bookriddle.controller.LivroDao;
 import br.com.bookriddle.controller.ReservaDao;
-import br.com.bookriddle.interfaces.ScreenConfig;
 import br.com.bookriddle.model.Emprestimo;
-import br.com.bookriddle.model.Livro;
 import br.com.bookriddle.model.Reserva;
 import br.com.bookriddle.model.Supervisor;
 import br.com.bookriddle.utilities.DateConvert;
@@ -19,11 +16,8 @@ import java.awt.Image;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -31,7 +25,7 @@ import javax.swing.JOptionPane;
  *
  * @author Marcos Vinícius Brás de Oliveira
  */
-public class FrmEmprestimo extends javax.swing.JFrame implements ScreenConfig {
+public class FrmEmprestimo extends javax.swing.JFrame {
 
     /**
      * Creates new form FrmPrincipal
@@ -39,15 +33,15 @@ public class FrmEmprestimo extends javax.swing.JFrame implements ScreenConfig {
     private Reserva reserva;
     private Supervisor supervisor;
     private Date data_emprestimo, data_devolucao;
-    private FrmListaReservas busca;
+    private FrmControleReservas busca;
 
     public FrmEmprestimo() {
         initComponents();
     }
 
-    public FrmEmprestimo(FrmListaReservas busca, Reserva reserva, Supervisor supervisor) {
-        frameConfig();
+    public FrmEmprestimo(FrmControleReservas busca, Reserva reserva, Supervisor supervisor) {
         initComponents();
+        setExtendedState(MAXIMIZED_BOTH);
         this.reserva = reserva;
         this.supervisor = supervisor;
         this.busca = busca;
@@ -86,18 +80,6 @@ public class FrmEmprestimo extends javax.swing.JFrame implements ScreenConfig {
         String dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(data_emprestimo);
 
         lbl_data_emprestimo.setText(dataFormatada);
-    }
-
-    @Override
-    public void frameConfig() {
-        this.setUndecorated(true);
-        this.setExtendedState(FrmMenu.MAXIMIZED_BOTH);
-
-        try {
-            this.setIconImage(ImageIO.read(new File("src/br/com/bookriddle/imagens/liphia_icon.png")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -139,6 +121,7 @@ public class FrmEmprestimo extends javax.swing.JFrame implements ScreenConfig {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Book Riddle - Conclusão de Empréstimo");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setUndecorated(true);
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(237, 250, 251));

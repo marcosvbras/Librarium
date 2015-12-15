@@ -7,26 +7,20 @@ package br.com.bookriddle.view;
 
 import br.com.bookriddle.controller.EmprestimoDao;
 import br.com.bookriddle.interfaces.ListagemModel;
-import br.com.bookriddle.interfaces.ScreenConfig;
 import br.com.bookriddle.model.Emprestimo;
 import br.com.bookriddle.utilities.DateConvert;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import javax.imageio.ImageIO;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Marcos Vinícius Brás de Oliveira
  */
-public class FrmRelatorios extends javax.swing.JFrame implements ScreenConfig, ListagemModel {
+public class FrmRelatorios extends javax.swing.JFrame implements ListagemModel {
 
     /**
      * Creates new form FrmPrincipal
@@ -37,8 +31,8 @@ public class FrmRelatorios extends javax.swing.JFrame implements ScreenConfig, L
     private Date data_de, data_ate;
     
     public FrmRelatorios() {
-        frameConfig();
         initComponents();
+        setExtendedState(MAXIMIZED_BOTH);
         model = (DefaultTableModel)tabela_emprestimo1.getModel();
         EmprestimoDao eDao = new EmprestimoDao();
         listEmprestimo = (ArrayList<Emprestimo>)eDao.buscarTodos("where status_emprestimo != 0 order by data_emprestimo");
@@ -60,18 +54,6 @@ public class FrmRelatorios extends javax.swing.JFrame implements ScreenConfig, L
                 buscarInformacoes();
             }
         });
-    }
-    
-    @Override
-    public void frameConfig() {
-        FrmRelatorios.this.setUndecorated(true);
-        this.setExtendedState(FrmRelatorios.MAXIMIZED_BOTH);
-        
-        try {
-            this.setIconImage(ImageIO.read(new File("src/br/com/bookriddle/imagens/liphia_icon.png")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
     
     @Override
@@ -173,6 +155,7 @@ public class FrmRelatorios extends javax.swing.JFrame implements ScreenConfig, L
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Liphia - Busca de Livros");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(237, 250, 251));
 
@@ -379,14 +362,12 @@ public class FrmRelatorios extends javax.swing.JFrame implements ScreenConfig, L
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(btn_plus3, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(cb_condicao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -402,9 +383,7 @@ public class FrmRelatorios extends javax.swing.JFrame implements ScreenConfig, L
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(cb_complemento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane2)))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(

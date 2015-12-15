@@ -11,8 +11,23 @@ package br.com.bookriddle.model;
  */
 public class Autor {
     
-    private int id;
+    private int id, status_autor;
     private String nome;
+    
+    public Autor() {}
+    
+    public Autor(String nome) {
+        this.nome = nome;
+        this.status_autor = 1;
+    }
+    
+    public int getStatusAutor() {
+        return status_autor;
+    }
+
+    public void setStatusAutor(int status_autor) {
+        this.status_autor = status_autor;
+    }
 
     public int getId() {
         return id;

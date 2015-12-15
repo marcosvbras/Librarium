@@ -7,18 +7,14 @@ package br.com.bookriddle.view;
 
 import br.com.bookriddle.controller.EmprestimoDao;
 import br.com.bookriddle.controller.LivroDao;
-import br.com.bookriddle.interfaces.ScreenConfig;
 import br.com.bookriddle.interfaces.ListagemModel;
 import br.com.bookriddle.model.Emprestimo;
 import br.com.bookriddle.model.Livro;
 import br.com.bookriddle.model.Supervisor;
 import br.com.bookriddle.utilities.DateConvert;
 import java.awt.Color;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -26,7 +22,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Marcos Vinícius Brás de Oliveira
  */
-public class FrmListaEmprestimo extends javax.swing.JFrame implements ScreenConfig, ListagemModel {
+public class FrmControleEmprestimo extends javax.swing.JFrame implements ListagemModel {
 
     /**
      * Creates new form FrmPrincipal
@@ -37,31 +33,20 @@ public class FrmListaEmprestimo extends javax.swing.JFrame implements ScreenConf
     private Supervisor supervisor;
     private Date date;
 
-    public FrmListaEmprestimo() {
+    public FrmControleEmprestimo() {
         initComponents();
+        setExtendedState(MAXIMIZED_BOTH);
     }
 
-    public FrmListaEmprestimo(Supervisor supervisor) {
-        frameConfig();
+    public FrmControleEmprestimo(Supervisor supervisor) {
         initComponents();
+        setExtendedState(MAXIMIZED_BOTH);
         this.supervisor = supervisor;
         modelo = (DefaultTableModel) tabela_emprestimo.getModel();
         EmprestimoDao eDao = new EmprestimoDao();
         listEmprestimo = (ArrayList<Emprestimo>) eDao.buscarTodos("where (status_emprestimo != 0) and (status_devolucao != 0) order by data_emprestimo");
         eDao.closeConnection();
         atualizarTabela();
-    }
-
-    @Override
-    public void frameConfig() {
-        FrmListaEmprestimo.this.setUndecorated(true);
-        this.setExtendedState(FrmMenu.MAXIMIZED_BOTH);
-
-        try {
-            this.setIconImage(ImageIO.read(new File("src/br/com/bookriddle/imagens/liphia_icon.png")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -183,6 +168,7 @@ public class FrmListaEmprestimo extends javax.swing.JFrame implements ScreenConf
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Liphia - Busca de Livros");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(237, 250, 251));
 
@@ -654,7 +640,7 @@ public class FrmListaEmprestimo extends javax.swing.JFrame implements ScreenConf
     }//GEN-LAST:event_btn_excluirMouseExited
 
     private void btn_novoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_novoMouseClicked
-        new FrmListaLivro(supervisor).setVisible(true);
+        new FrmControleLivro(supervisor).setVisible(true);
         dispose();
     }//GEN-LAST:event_btn_novoMouseClicked
 
@@ -703,14 +689,46 @@ public class FrmListaEmprestimo extends javax.swing.JFrame implements ScreenConf
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmListaEmprestimo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmControleEmprestimo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmListaEmprestimo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmControleEmprestimo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmListaEmprestimo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmControleEmprestimo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmListaEmprestimo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmControleEmprestimo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -747,7 +765,7 @@ public class FrmListaEmprestimo extends javax.swing.JFrame implements ScreenConf
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrmListaEmprestimo().setVisible(true);
+                new FrmControleEmprestimo().setVisible(true);
             }
         });
     }

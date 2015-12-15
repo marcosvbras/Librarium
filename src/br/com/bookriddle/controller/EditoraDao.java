@@ -34,7 +34,7 @@ public class EditoraDao implements DBModel {
 
     @Override
     public boolean editar() {
-        String sql = "update " + TABELA_EDITORA + " set nome = '" + editora.getNome() + "' where id = " + editora.getId();
+        String sql = "update " + TABELA_EDITORA + " set nome = '" + editora.getNome() + "', status_editora = " + editora.getStatusEditora() + " where id = " + editora.getId();
                         
         try {
             Statement stm = conn.createStatement();
@@ -54,7 +54,7 @@ public class EditoraDao implements DBModel {
 
     @Override
     public boolean inserir() {
-        String sql = "insert into " + TABELA_EDITORA + " values(null, '" + editora.getNome() + "')";
+        String sql = "insert into " + TABELA_EDITORA + " values(null, '" + editora.getNome() + "', " + editora.getStatusEditora() + ")";
     
         try {
             Statement stm = conn.createStatement();
@@ -80,6 +80,7 @@ public class EditoraDao implements DBModel {
                 e = new Editora();
                 e.setId(rs.getInt("id"));
                 e.setNome(rs.getString("nome"));
+                e.setStatusEditora(rs.getInt("status_editora"));
             }
             
             stm.close();
@@ -107,6 +108,7 @@ public class EditoraDao implements DBModel {
                 e = new Editora();
                 e.setId(rs.getInt("id"));
                 e.setNome(rs.getString("nome"));
+                e.setStatusEditora(rs.getInt("status_editora"));
                 listEditora.add(e);
             }
             

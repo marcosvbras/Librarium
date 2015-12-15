@@ -6,21 +6,17 @@
 package br.com.bookriddle.view;
 
 import br.com.bookriddle.controller.SupervisorDao;
-import br.com.bookriddle.interfaces.ScreenConfig;
 import br.com.bookriddle.interfaces.Verificacao;
 import br.com.bookriddle.model.Funcionario;
 import br.com.bookriddle.model.Supervisor;
 import java.awt.Color;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author Marcos Vinícius Brás de Oliveira
  */
-public class FrmUsuario extends javax.swing.JFrame implements Verificacao, ScreenConfig {
+public class FrmUsuario extends javax.swing.JFrame implements Verificacao {
 
     /**
      * Creates new form FrmPrincipal
@@ -29,7 +25,7 @@ public class FrmUsuario extends javax.swing.JFrame implements Verificacao, Scree
     private int action;
     public static final int ACTION_INSERT = 1;
     public static final int ACTION_UPDATE = 2;
-    private FrmListaUsuario controle;
+    private FrmControleUsuario controle;
     private Funcionario funcionario;
 
     public FrmUsuario() {
@@ -37,19 +33,19 @@ public class FrmUsuario extends javax.swing.JFrame implements Verificacao, Scree
     }
     
     // Construtor chamado para inserir novos usuários
-    public FrmUsuario(FrmListaUsuario controle) {
+    public FrmUsuario(FrmControleUsuario controle) {
         initComponents();
-        frameConfig();
+        setLocationRelativeTo(null);
         action = ACTION_INSERT;
         this.controle = controle;
         btn_excluir.setVisible(false);
     }
     
     // Construtor chamado para editar ou excluir usuários
-    public FrmUsuario(Supervisor supervisor, FrmListaUsuario controle) {
+    public FrmUsuario(Supervisor supervisor, FrmControleUsuario controle) {
         this.supervisor = supervisor;
         initComponents();
-        frameConfig();
+        setLocationRelativeTo(null);
         action = ACTION_UPDATE;
         preencherCampos();
         this.funcionario = new Funcionario();
@@ -61,17 +57,6 @@ public class FrmUsuario extends javax.swing.JFrame implements Verificacao, Scree
         lbl_funcionario.setText(supervisor.getNome());
         txt_login.setText(supervisor.getLogin());
         txt_senha.setText(supervisor.getSenha());
-    }
-
-    @Override
-    public void frameConfig() {
-        this.setLocationRelativeTo(null);
-
-        try {
-            this.setIconImage(ImageIO.read(new File("src/br/com/bookriddle/imagens/liphia_icon.png")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override

@@ -5,52 +5,21 @@
  */
 package br.com.bookriddle.view;
 
-import br.com.bookriddle.interfaces.ScreenConfig;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 
 /**
  *
  * @author Marcos Vinícius Brás de Oliveira
  */
-public class FrmPrincipal extends javax.swing.JFrame implements ScreenConfig {
+public class FrmInicial extends javax.swing.JFrame {
 
     /**
      * Creates new form FrmPrincipal
      */
     
-    public FrmPrincipal() {
-        frameConfig();
+    public FrmInicial() {
         initComponents();
-    }
-    
-    @Override
-    public void frameConfig() {
-        FrmPrincipal.this.setUndecorated(true);
-        this.setExtendedState(FrmPrincipal.MAXIMIZED_BOTH);
-        Toolkit kit = Toolkit.getDefaultToolkit();  
-        Dimension tamTela = kit.getScreenSize();  
-
-        //Pegando a largura total da tela  
-        int larg = tamTela.width;  
-
-        //Pegando a altura total da tela  
-        int alt = tamTela.height;
-        int minhaLargura = larg;  
-        int minhaAltura = alt;  
-
-        //Mandando o JFrame utilizar suas dimensões  
-        setSize(minhaLargura,minhaAltura);
-        
-        try {
-            this.setIconImage(ImageIO.read(new File("src/br/com/bookriddle/imagens/liphia_icon.png")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        setExtendedState(MAXIMIZED_BOTH);
     }
 
     /**
@@ -84,6 +53,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements ScreenConfig {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Book Riddle - Início");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setUndecorated(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -324,7 +294,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements ScreenConfig {
     }//GEN-LAST:event_panel_buscarMouseExited
 
     private void panel_buscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel_buscarMouseClicked
-        FrmListaLivro busca = new FrmListaLivro(null);
+        FrmControleLivro busca = new FrmControleLivro(null);
         busca.setVisible(true);
     }//GEN-LAST:event_panel_buscarMouseClicked
 
@@ -342,7 +312,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements ScreenConfig {
     }//GEN-LAST:event_panel_loginMouseClicked
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        FrmPrincipal.this.setExtendedState(FrmPrincipal.MAXIMIZED_BOTH);
+        FrmInicial.this.setExtendedState(FrmInicial.MAXIMIZED_BOTH);
     }//GEN-LAST:event_formWindowOpened
 
     private void btn_sairMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_sairMouseClicked
@@ -374,20 +344,21 @@ public class FrmPrincipal extends javax.swing.JFrame implements ScreenConfig {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmInicial.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmInicial.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmInicial.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmInicial.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrmPrincipal().setVisible(true);
+                new FrmInicial().setVisible(true);
             }
         });
     }

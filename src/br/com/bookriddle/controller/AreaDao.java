@@ -34,7 +34,7 @@ public class AreaDao implements DBModel {
     
     @Override
     public boolean editar() {
-        String sql = "update " + TABELA_AREA + " set nome = '" + area.getNome() + "' where id = " + area.getId();
+        String sql = "update " + TABELA_AREA + " set nome = '" + area.getNome() + "', status_area = " + area.getStatusArea() + " where id = " + area.getId();
                         
         try {
             Statement stm = conn.createStatement();
@@ -54,7 +54,7 @@ public class AreaDao implements DBModel {
 
     @Override
     public boolean inserir() {
-        String sql = "insert into " + TABELA_AREA + " values(null, '" + area.getNome() + "')";
+        String sql = "insert into " + TABELA_AREA + " values(null, '" + area.getNome() + "', " + area.getStatusArea() +")";
     
         try {
             Statement stm = conn.createStatement();
@@ -80,6 +80,7 @@ public class AreaDao implements DBModel {
                 a = new Area();
                 a.setId(rs.getInt("id"));
                 a.setNome(rs.getString("nome"));
+                a.setStatusArea(rs.getInt("status_area"));
             }
             
             stm.close();
@@ -107,6 +108,7 @@ public class AreaDao implements DBModel {
                 a = new Area();
                 a.setId(rs.getInt("id"));
                 a.setNome(rs.getString("nome"));
+                a.setStatusArea(rs.getInt("status_area"));
                 listArea.add(a);
             }
             

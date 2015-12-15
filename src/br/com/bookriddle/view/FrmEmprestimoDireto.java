@@ -8,7 +8,6 @@ package br.com.bookriddle.view;
 import br.com.bookriddle.controller.EmprestimoDao;
 import br.com.bookriddle.controller.LivroDao;
 import br.com.bookriddle.controller.ReservaDao;
-import br.com.bookriddle.interfaces.ScreenConfig;
 import br.com.bookriddle.model.Emprestimo;
 import br.com.bookriddle.model.Funcionario;
 import br.com.bookriddle.model.Livro;
@@ -19,9 +18,7 @@ import java.awt.Image;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.io.IOException;
 import java.util.Date;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -29,7 +26,7 @@ import javax.swing.JOptionPane;
  *
  * @author Marcos Vinícius Brás de Oliveira
  */
-public class FrmEmprestimoDireto extends javax.swing.JFrame implements ScreenConfig {
+public class FrmEmprestimoDireto extends javax.swing.JFrame {
 
     /**
      * Creates new form FrmPrincipal
@@ -39,7 +36,7 @@ public class FrmEmprestimoDireto extends javax.swing.JFrame implements ScreenCon
     private Livro livro;
     private Emprestimo emprestimo;
     private Funcionario funcionario;
-    private FrmListaEmprestimo frameLista;
+    private FrmControleEmprestimo frameLista;
 
     public FrmEmprestimoDireto() {
         initComponents();
@@ -47,8 +44,8 @@ public class FrmEmprestimoDireto extends javax.swing.JFrame implements ScreenCon
 
     // Construtor para fazer um empréstimo direto à partir da opção "Realizar Empréstimo" da tela de listagem de livros
     public FrmEmprestimoDireto(Livro livro, Supervisor supervisor) {
-        frameConfig();
         initComponents();
+        setExtendedState(MAXIMIZED_BOTH);
         this.livro = livro;
         this.supervisor = supervisor;
         preencherCampos1();
@@ -66,9 +63,9 @@ public class FrmEmprestimoDireto extends javax.swing.JFrame implements ScreenCon
     }
 
     // Contrutor da edição ou exclusão de empréstimo chamado pela opção "Detalhes do Empréstimo" na tela de listagem de empréstimos
-    public FrmEmprestimoDireto(Supervisor supervisor, Emprestimo emprestimo, FrmListaEmprestimo frameLista) {
-        frameConfig();
+    public FrmEmprestimoDireto(Supervisor supervisor, Emprestimo emprestimo, FrmControleEmprestimo frameLista) {
         initComponents();
+        setExtendedState(MAXIMIZED_BOTH);
         this.emprestimo = emprestimo;
         this.supervisor = supervisor;
         this.frameLista = frameLista;
@@ -144,18 +141,6 @@ public class FrmEmprestimoDireto extends javax.swing.JFrame implements ScreenCon
         lbl_funcionario.setText(funcionario.getNome());
     }
 
-    @Override
-    public void frameConfig() {
-        this.setUndecorated(true);
-        this.setExtendedState(FrmMenu.MAXIMIZED_BOTH);
-
-        try {
-            this.setIconImage(ImageIO.read(new File("src/br/com/bookriddle/imagens/liphia_icon.png")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -198,6 +183,7 @@ public class FrmEmprestimoDireto extends javax.swing.JFrame implements ScreenCon
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Book Riddle - Conclusão de Empréstimo");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setUndecorated(true);
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(237, 250, 251));

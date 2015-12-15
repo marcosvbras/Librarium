@@ -3,10 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/G:/BookRiddle/src/br/com/bookriddle/view/FrmReserva.java</file>
-            <file>file:/G:/BookRiddle/src/br/com/bookriddle/view/FrmPrincipal.java</file>
-            <file>file:/G:/BookRiddle/src/br/com/bookriddle/view/FrmRelatorios.java</file>
-            <file>file:/G:/BookRiddle/src/br/com/bookriddle/view/FrmListaEmprestimo.java</file>
+            <file>file:/G:/BookRiddle/src/br/com/bookriddle/utilities/ImageTransfer.java</file>
+            <file>file:/G:/BookRiddle/src/br/com/bookriddle/view/FrmCadastroLivro.java</file>
+            <file>file:/G:/BookRiddle/src/br/com/bookriddle/controller/FuncionarioDao.java</file>
+            <file>file:/G:/BookRiddle/src/br/com/bookriddle/utilities/MailSender.java</file>
+            <file>file:/G:/BookRiddle/src/br/com/bookriddle/view/FrmFuncionario.java</file>
         </group>
     </open-files>
 </project-private>

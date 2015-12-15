@@ -11,8 +11,23 @@ package br.com.bookriddle.model;
  */
 public class Editora {
     
-    private int id;
+    private int id, status_editora;
     private String nome;
+    
+    public Editora() {}
+    
+    public Editora(String nome) {
+        this.nome = nome;
+        this.status_editora = 1;
+    }
+    
+    public int getStatusEditora() {
+        return status_editora;
+    }
+
+    public void setStatusEditora(int status_editora) {
+        this.status_editora = status_editora;
+    }
 
     public int getId() {
         return id;

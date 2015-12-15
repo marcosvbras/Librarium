@@ -6,14 +6,15 @@
 package br.com.bookriddle.view;
 
 import br.com.bookriddle.interfaces.Verificacao;
+import br.com.bookriddle.model.Area;
+import br.com.bookriddle.model.Autor;
+import br.com.bookriddle.model.Editora;
 import br.com.bookriddle.model.Livro;
 import br.com.bookriddle.model.Supervisor;
 import br.com.bookriddle.utilities.ImageTransfer;
 import java.awt.Color;
 import java.awt.Image;
 import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
@@ -42,22 +43,24 @@ public class FrmVerLivro extends javax.swing.JFrame implements Verificacao {
     private Supervisor sup;
     private String temp_url;
     private int resposta;
-    private FrmListaLivro busca;
+    private FrmControleLivro busca;
+    private Autor autor;
+    private Area area;
+    private Editora editora;
     
     public FrmVerLivro() {
         initComponents();
     }
     
-    public FrmVerLivro(FrmListaLivro busca) {
+    public FrmVerLivro(FrmControleLivro busca) {
         initComponents();
-        setResolution();
         habilitar(false);
         this.busca = busca;
+        setLocationRelativeTo(null);
     }
     
-    public FrmVerLivro(Livro livro, FrmListaLivro busca) {
+    public FrmVerLivro(Livro livro, FrmControleLivro busca) {
         initComponents();
-        setResolution();
         habilitar(false); // Impede que os campos sejam editados
         this.livro = livro; 
         this.setTitle(livro.getTitulo());
@@ -67,15 +70,16 @@ public class FrmVerLivro extends javax.swing.JFrame implements Verificacao {
         if(busca == null) {
             btn_reservar.setVisible(false);
         }
+        setLocationRelativeTo(null);
     }
     
     private void preencherCampos() { // Método usado para preencher os campos de acordo com o livro selecionado na tela de busca
         txt_ispn.setText(livro.getIsbn());
         txt_titulo.setText(livro.getTitulo());
-        txt_autor.setText(livro.getAutor());
-        txt_area.setText(livro.getArea());
+        lbl_autor.setText(livro.getInfo()[0]);
+        lbl_area.setText(livro.getInfo()[1]);
         txt_edicao.setText(livro.getEdicao());
-        txt_editora.setText(livro.getEditora());
+        lbl_editora.setText(livro.getInfo()[2]);
         txt_paginas.setText("" + livro.getPaginas());
         txt_quantidade.setText("" + livro.getQuantidade());
         txt_ano.setText("" + livro.getAno());
@@ -98,29 +102,34 @@ public class FrmVerLivro extends javax.swing.JFrame implements Verificacao {
         }
     }
     
-    private void setResolution() { // Método usado para configurar o frame de acordo com a tela
-        this.setLocationRelativeTo(null);
-
-        try {
-            this.setIconImage(ImageIO.read(new File("src/br/com/bookriddle/imagens/liphia_icon.png")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
     private void habilitar(boolean state) { // Método que habilita ou desabilita a possibilidade de edição dos campos
         txt_ispn.setEditable(state);
         txt_titulo.requestFocus();
         txt_titulo.setEditable(state);
-        txt_autor.setEditable(state);
-        txt_area.setEditable(state);
+        lbl_autor.setEnabled(state);
+        lbl_area.setEnabled(state);
         txt_edicao.setEditable(state);
-        txt_editora.setEditable(state);
+        lbl_editora.setEnabled(state);
         txt_paginas.setEditable(state);
         txt_quantidade.setEditable(state);
         txt_ano.setEditable(state);
         txt_armario.setEditable(state);
         txt_prateleira.setEditable(state);
+    }
+    
+    public void setAutor(Autor autor) {
+        this.autor = autor;
+        lbl_autor.setText(autor.getNome());
+    }
+    
+    public void setArea(Area area) {
+        this.area = area;
+        lbl_area.setText(area.getNome());
+    }
+    
+    public void setEditora(Editora editora) {
+        this.editora = editora;
+        lbl_editora.setText(editora.getNome());
     }
     
     /**
@@ -141,13 +150,10 @@ public class FrmVerLivro extends javax.swing.JFrame implements Verificacao {
         jLabel5 = new javax.swing.JLabel();
         txt_titulo = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        txt_autor = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
-        txt_area = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         txt_edicao = new javax.swing.JTextField();
         jLabel21 = new javax.swing.JLabel();
-        txt_editora = new javax.swing.JTextField();
         jLabel22 = new javax.swing.JLabel();
         txt_paginas = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
@@ -158,6 +164,9 @@ public class FrmVerLivro extends javax.swing.JFrame implements Verificacao {
         txt_ano = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
         txt_prateleira = new javax.swing.JTextField();
+        lbl_autor = new javax.swing.JLabel();
+        lbl_area = new javax.swing.JLabel();
+        lbl_editora = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         lbl_img = new javax.swing.JLabel();
@@ -219,13 +228,9 @@ public class FrmVerLivro extends javax.swing.JFrame implements Verificacao {
         jLabel6.setForeground(new java.awt.Color(51, 51, 51));
         jLabel6.setText("Autor");
 
-        txt_autor.setForeground(new java.awt.Color(51, 51, 51));
-
         jLabel19.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(51, 51, 51));
         jLabel19.setText("Área");
-
-        txt_area.setForeground(new java.awt.Color(51, 51, 51));
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(51, 51, 51));
@@ -236,8 +241,6 @@ public class FrmVerLivro extends javax.swing.JFrame implements Verificacao {
         jLabel21.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(51, 51, 51));
         jLabel21.setText("Editora");
-
-        txt_editora.setForeground(new java.awt.Color(51, 51, 51));
 
         jLabel22.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel22.setForeground(new java.awt.Color(51, 51, 51));
@@ -269,6 +272,36 @@ public class FrmVerLivro extends javax.swing.JFrame implements Verificacao {
 
         txt_prateleira.setForeground(new java.awt.Color(51, 51, 51));
 
+        lbl_autor.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbl_autor.setForeground(new java.awt.Color(51, 51, 51));
+        lbl_autor.setText("<Selecione>");
+        lbl_autor.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lbl_autor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_autorMouseClicked(evt);
+            }
+        });
+
+        lbl_area.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbl_area.setForeground(new java.awt.Color(51, 51, 51));
+        lbl_area.setText("<Selecione>");
+        lbl_area.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lbl_area.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_areaMouseClicked(evt);
+            }
+        });
+
+        lbl_editora.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbl_editora.setForeground(new java.awt.Color(51, 51, 51));
+        lbl_editora.setText("<Selecione>");
+        lbl_editora.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lbl_editora.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_editoraMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
         panel1.setLayout(panel1Layout);
         panel1Layout.setHorizontalGroup(
@@ -277,6 +310,27 @@ public class FrmVerLivro extends javax.swing.JFrame implements Verificacao {
                 .addContainerGap(156, Short.MAX_VALUE)
                 .addComponent(btn_reservar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(109, 109, 109))
+            .addGroup(panel1Layout.createSequentialGroup()
+                .addGap(66, 66, 66)
+                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel1Layout.createSequentialGroup()
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel19))
+                        .addGap(18, 18, 18)
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lbl_autor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbl_area, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbl_editora, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)))
+                    .addGroup(panel1Layout.createSequentialGroup()
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_ispn, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(19, Short.MAX_VALUE))
             .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(panel1Layout.createSequentialGroup()
                     .addGap(20, 20, 20)
@@ -285,16 +339,6 @@ public class FrmVerLivro extends javax.swing.JFrame implements Verificacao {
                             .addComponent(jLabel15)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(txt_ano, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(panel1Layout.createSequentialGroup()
-                            .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel21)
-                                .addComponent(jLabel11)
-                                .addComponent(jLabel22))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txt_edicao)
-                                .addComponent(txt_editora)
-                                .addComponent(txt_paginas, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(panel1Layout.createSequentialGroup()
                             .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(jLabel16)
@@ -309,52 +353,47 @@ public class FrmVerLivro extends javax.swing.JFrame implements Verificacao {
                             .addComponent(txt_prateleira, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(panel1Layout.createSequentialGroup()
                             .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel7)
-                                .addComponent(jLabel5)
-                                .addComponent(jLabel6)
-                                .addComponent(jLabel19))
+                                .addComponent(jLabel21)
+                                .addComponent(jLabel11)
+                                .addComponent(jLabel22))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txt_ispn)
-                                .addComponent(txt_autor)
-                                .addComponent(txt_titulo)
-                                .addComponent(txt_area, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE))))
+                                .addComponent(txt_edicao)
+                                .addComponent(txt_paginas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE))))
                     .addContainerGap(20, Short.MAX_VALUE)))
         );
         panel1Layout.setVerticalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel1Layout.createSequentialGroup()
-                .addContainerGap(443, Short.MAX_VALUE)
+                .addGap(35, 35, 35)
+                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_ispn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_autor, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(5, 5, 5)
+                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_area, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(46, 46, 46)
+                .addComponent(lbl_editora, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
                 .addComponent(btn_reservar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
             .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(panel1Layout.createSequentialGroup()
-                    .addGap(28, 28, 28)
-                    .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txt_ispn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(panel1Layout.createSequentialGroup()
-                            .addGap(1, 1, 1)
-                            .addComponent(txt_titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txt_autor, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txt_area, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGap(178, 178, 178)
                     .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txt_edicao, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txt_editora, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
+                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -445,6 +484,18 @@ public class FrmVerLivro extends javax.swing.JFrame implements Verificacao {
         btn_reservar.setBackground(new Color(227,6,19));
     }//GEN-LAST:event_btn_reservarMouseExited
 
+    private void lbl_autorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_autorMouseClicked
+        new FrmSelecionarAutor(this).setVisible(true);
+    }//GEN-LAST:event_lbl_autorMouseClicked
+
+    private void lbl_areaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_areaMouseClicked
+        new FrmSelecionarArea(this).setVisible(true);
+    }//GEN-LAST:event_lbl_areaMouseClicked
+
+    private void lbl_editoraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_editoraMouseClicked
+        new FrmSelecionarEditora(this).setVisible(true);
+    }//GEN-LAST:event_lbl_editoraMouseClicked
+
    
     /**
      * @param args the command line arguments
@@ -513,14 +564,14 @@ public class FrmVerLivro extends javax.swing.JFrame implements Verificacao {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel label_btn3;
+    private javax.swing.JLabel lbl_area;
+    private javax.swing.JLabel lbl_autor;
+    private javax.swing.JLabel lbl_editora;
     private javax.swing.JLabel lbl_img;
     private javax.swing.JPanel panel1;
     private javax.swing.JTextField txt_ano;
-    private javax.swing.JTextField txt_area;
     private javax.swing.JTextField txt_armario;
-    private javax.swing.JTextField txt_autor;
     private javax.swing.JTextField txt_edicao;
-    private javax.swing.JTextField txt_editora;
     private javax.swing.JTextField txt_ispn;
     private javax.swing.JTextField txt_paginas;
     private javax.swing.JTextField txt_prateleira;
@@ -530,10 +581,8 @@ public class FrmVerLivro extends javax.swing.JFrame implements Verificacao {
 
     @Override
     public boolean validarCampos() {
-        if(!txt_titulo.getText().equals("") && !txt_autor.getText().equals("") 
-                && !txt_area.getText().equals("") && !txt_edicao.getText().equals("") && !txt_editora.getText().equals("")
-                && !txt_paginas.getText().equals("") && !txt_quantidade.equals("") && !txt_ano.getText().equals("")) {
-            
+        if(!txt_titulo.getText().equals("") && autor != null && area != null && !txt_edicao.getText().equals("") 
+                && editora != null && !txt_paginas.getText().equals("") && !txt_quantidade.equals("") && !txt_ano.getText().equals("")) {
             return true;
         } else {
             return false;

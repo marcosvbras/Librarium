@@ -6,7 +6,6 @@
 package br.com.bookriddle.view;
 
 import br.com.bookriddle.controller.FuncionarioDao;
-import br.com.bookriddle.interfaces.ScreenConfig;
 import br.com.bookriddle.interfaces.Verificacao;
 import br.com.bookriddle.model.Funcionario;
 import java.awt.Color;
@@ -16,32 +15,32 @@ import javax.swing.JOptionPane;
  *
  * @author Aluno Manha
  */
-public class FrmFuncionario extends javax.swing.JFrame implements Verificacao, ScreenConfig {
+public class FrmFuncionario extends javax.swing.JFrame implements Verificacao {
 
     /**
      * Creates new form FrmFuncionarios
      */
     private Funcionario fun;
     private int action;
-    private FrmListaFuncionario busca;
+    private FrmControleFuncionario busca;
 
     public FrmFuncionario() {
         initComponents();
     }
 
     // Construtor chamado para inserir novos funcionários
-    public FrmFuncionario(FrmListaFuncionario busca) {
+    public FrmFuncionario(FrmControleFuncionario busca) {
         initComponents();
-        frameConfig();
+        setLocationRelativeTo(null);
         action = FrmEditarLivro.ACTION_INSERT;
         this.busca = busca;
         btn_excluir.setVisible(false);
     }
 
     // Construtor chamado para edita ou excluir funcionários
-    public FrmFuncionario(Funcionario fun, FrmListaFuncionario busca) {
+    public FrmFuncionario(Funcionario fun, FrmControleFuncionario busca) {
         initComponents();
-        frameConfig();
+        setLocationRelativeTo(null);
         this.fun = fun;
         action = FrmEditarLivro.ACTION_UPDATE;
         preencherCampos();
@@ -74,11 +73,6 @@ public class FrmFuncionario extends javax.swing.JFrame implements Verificacao, S
         } else {
             return false;
         }
-    }
-
-    @Override
-    public void frameConfig() {
-        this.setLocationRelativeTo(null);
     }
 
     /**

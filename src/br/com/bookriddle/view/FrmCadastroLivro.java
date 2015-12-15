@@ -7,14 +7,11 @@ package br.com.bookriddle.view;
 
 import br.com.bookriddle.utilities.ImageTransfer;
 import br.com.bookriddle.controller.LivroDao;
-import br.com.bookriddle.interfaces.ScreenConfig;
 import br.com.bookriddle.interfaces.Verificacao;
 import br.com.bookriddle.model.Livro;
 import java.awt.Color;
 import java.awt.Image;
 import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -24,7 +21,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  * @author Marcos Vinícius Brás de Oliveira
  */
-public class FrmCadastroLivro extends javax.swing.JFrame implements Verificacao, ScreenConfig {
+public class FrmCadastroLivro extends javax.swing.JFrame implements Verificacao {
 
     /**
      * Creates new form FrmPrincipal
@@ -38,28 +35,17 @@ public class FrmCadastroLivro extends javax.swing.JFrame implements Verificacao,
     private int state = ACTION_SELECT;
     private ImageTransfer it;
     private String destination_path = null;
-    private FrmListaLivro busca;
+    private FrmControleLivro busca;
 
     public FrmCadastroLivro() {
         initComponents();
-        frameConfig();
+        setLocationRelativeTo(null);
     }
 
-    public FrmCadastroLivro(FrmListaLivro busca) {
+    public FrmCadastroLivro(FrmControleLivro busca) {
         initComponents();
-        frameConfig();
+        setLocationRelativeTo(null);
         this.busca = busca;
-    }
-
-    @Override
-    public void frameConfig() {
-        this.setLocationRelativeTo(null);
-
-        try {
-            this.setIconImage(ImageIO.read(new File("src/br/com/bookriddle/imagens/liphia_icon.png")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -446,10 +432,10 @@ public class FrmCadastroLivro extends javax.swing.JFrame implements Verificacao,
             Livro l = new Livro();
             l.setIsbn(txt_isbn.getText());
             l.setTitulo(txt_titulo.getText());
-            l.setAutor(txt_autor.getText());
-            l.setArea(txt_area.getText());
+            //l.setAutor(txt_autor.getText());
+            //l.setArea(txt_area.getText());
             l.setEdicao(txt_edicao.getText());
-            l.setEditora(txt_editora.getText());
+            //l.setEditora(txt_editora.getText());
             l.setPaginas(Integer.parseInt(txt_paginas.getText()));
             l.setQuantidade(Integer.parseInt(txt_quantidade.getText()));
             l.setAno(Integer.parseInt(txt_ano.getText()));

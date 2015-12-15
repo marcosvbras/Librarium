@@ -6,25 +6,19 @@
 package br.com.bookriddle.view;
 
 import br.com.bookriddle.controller.ReservaDao;
-import br.com.bookriddle.interfaces.ScreenConfig;
 import br.com.bookriddle.model.Reserva;
 import br.com.bookriddle.model.Supervisor;
 import br.com.bookriddle.utilities.DateConvert;
 import java.awt.Color;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author Marcos Vinícius Brás de Oliveira
  */
-public class FrmMenu extends javax.swing.JFrame implements ScreenConfig {
+public class FrmMenu extends javax.swing.JFrame {
 
     /**
      * Creates new form FrmPrincipal
@@ -38,8 +32,8 @@ public class FrmMenu extends javax.swing.JFrame implements ScreenConfig {
     }
     
     public FrmMenu(Supervisor usuario) {
-        frameConfig();
         initComponents();
+        setExtendedState(MAXIMIZED_BOTH);
         this.supervisor = usuario;
         
         // Thread para verificar novas reservas depois de 1 segundo logado
@@ -68,22 +62,22 @@ public class FrmMenu extends javax.swing.JFrame implements ScreenConfig {
             int result = JOptionPane.showConfirmDialog(null, "Há novas reservas.\nDeseja conferí-las?");
             
             if(result == 0) {
-                new FrmListaReservas(supervisor).setVisible(true);
+                new FrmControleReservas(supervisor).setVisible(true);
             }
         }
     }
     
-    @Override
-    public void frameConfig() {
-        FrmMenu.this.setUndecorated(true);
-        this.setExtendedState(FrmMenu.MAXIMIZED_BOTH);
-        
-        try {
-            this.setIconImage(ImageIO.read(new File("src/br/com/bookriddle/imagens/liphia_icon.png")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    @Override
+//    public void frameConfig() {
+//        FrmMenu.this.setUndecorated(true);
+//        this.setExtendedState(FrmMenu.MAXIMIZED_BOTH);
+//        
+//        try {
+//            this.setIconImage(ImageIO.read(new File("src/br/com/bookriddle/imagens/liphia_icon.png")));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -133,6 +127,7 @@ public class FrmMenu extends javax.swing.JFrame implements ScreenConfig {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Liphia - Início");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setUndecorated(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -708,7 +703,7 @@ public class FrmMenu extends javax.swing.JFrame implements ScreenConfig {
     }//GEN-LAST:event_btn_logoutMouseEntered
 
     private void btn_logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_logoutMouseClicked
-        new FrmPrincipal().setVisible(true);
+        new FrmInicial().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_logoutMouseClicked
 
@@ -721,7 +716,7 @@ public class FrmMenu extends javax.swing.JFrame implements ScreenConfig {
     }//GEN-LAST:event_btn_livroMouseEntered
 
     private void btn_livroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_livroMouseClicked
-        new FrmListaLivro(supervisor).setVisible(true);
+        new FrmControleLivro(supervisor).setVisible(true);
     }//GEN-LAST:event_btn_livroMouseClicked
 
     private void btn_funcionarioMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_funcionarioMouseExited
@@ -733,7 +728,7 @@ public class FrmMenu extends javax.swing.JFrame implements ScreenConfig {
     }//GEN-LAST:event_btn_funcionarioMouseEntered
 
     private void btn_funcionarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_funcionarioMouseClicked
-        new FrmListaFuncionario().setVisible(true);
+        new FrmControleFuncionario().setVisible(true);
     }//GEN-LAST:event_btn_funcionarioMouseClicked
 
     private void btn_emprestimoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_emprestimoMouseExited
@@ -745,7 +740,7 @@ public class FrmMenu extends javax.swing.JFrame implements ScreenConfig {
     }//GEN-LAST:event_btn_emprestimoMouseEntered
 
     private void btn_emprestimoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_emprestimoMouseClicked
-        new FrmListaEmprestimo(supervisor).setVisible(true);
+        new FrmControleEmprestimo(supervisor).setVisible(true);
     }//GEN-LAST:event_btn_emprestimoMouseClicked
 
     private void btn_reservasMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_reservasMouseExited
@@ -757,7 +752,7 @@ public class FrmMenu extends javax.swing.JFrame implements ScreenConfig {
     }//GEN-LAST:event_btn_reservasMouseEntered
 
     private void btn_reservasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_reservasMouseClicked
-        FrmListaReservas reservas = new FrmListaReservas(this.supervisor);
+        FrmControleReservas reservas = new FrmControleReservas(this.supervisor);
         reservas.setVisible(true);
     }//GEN-LAST:event_btn_reservasMouseClicked
 

@@ -13,8 +13,25 @@ public class Livro {
     
     public static final int STATUS_ATIVO = 1;
     public static final int STATUS_INATIVO = 0;
-    private String titulo, autor, area, edicao, editora, armario, url, prateleira, isbn;
-    private int ano, quantidade, id, paginas, status;
+    private String titulo, edicao, armario, url, prateleira, isbn, descricao;
+    private int ano, quantidade, id, paginas, status, autor_id, editora_id, area_id;
+    private String[] info;
+    
+    public String getDescricao() {
+        return descricao;
+    }
+    
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public String[] getInfo() {
+        return info;
+    }
+
+    public void setInfo(String[] info) {
+        this.info = info;
+    }
 
     public int getStatus() {
         return status;
@@ -32,24 +49,24 @@ public class Livro {
         this.url = url;
     }
 
-    public String getAutor() {
-        return autor;
+    public Integer getAutorId() {
+        return autor_id;
     }
 
-    public void setAutor(String autor) {
-        this.autor = autor;
+    public void setAutorId(Integer autor_id) {
+        this.autor_id = autor_id;
     }
 
     public String getArmario() {
         return armario;
     }
 
-    public String getArea() {
-        return area;
+    public Integer getAreaId() {
+        return area_id;
     }
 
-    public void setArea(String area) {
-        this.area = area;
+    public void setAreaId(Integer area_id) {
+        this.area_id = area_id;
     }
 
     public void setArmario(String armario) {
@@ -80,12 +97,12 @@ public class Livro {
         this.edicao = edicao;
     }
 
-    public String getEditora() {
-        return editora;
+    public Integer getEditoraId() {
+        return editora_id;
     }
 
-    public void setEditora(String editora) {
-        this.editora = editora;
+    public void setEditoraId(Integer editora_id) {
+        this.editora_id = editora_id;
     }
 
     public String getTitulo() {

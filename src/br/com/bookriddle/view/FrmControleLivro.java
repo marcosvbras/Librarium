@@ -6,24 +6,19 @@
 package br.com.bookriddle.view;
 
 import br.com.bookriddle.controller.LivroDao;
-import br.com.bookriddle.interfaces.ScreenConfig;
 import br.com.bookriddle.interfaces.ListagemModel;
 import br.com.bookriddle.model.Livro;
 import br.com.bookriddle.model.Supervisor;
 import java.awt.Color;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Marcos Vinícius Brás de Oliveira
  */
-public class FrmListaLivro extends javax.swing.JFrame implements ScreenConfig, ListagemModel {
+public class FrmControleLivro extends javax.swing.JFrame implements ListagemModel {
 
     /**
      * Creates new form FrmPrincipal
@@ -31,27 +26,27 @@ public class FrmListaLivro extends javax.swing.JFrame implements ScreenConfig, L
     private DefaultTableModel modelo;
     private Livro livro;
     private ArrayList<Livro> listLivro;
-    private String[] campo = {"todos", "titulo", "autor", "editora", "area"};
+    private String[] campo = {"todos", "titulo", "autor_id", "editora_id", "area_id"};
     private String complemento = "";
     public static final String DISPONIVEL = "Disponível";
     public static final String INDISPONIVEL = "Indisponível";
     private Supervisor supervisor;
 
-    public FrmListaLivro() {
-        frameConfig();
+    public FrmControleLivro() {
         initComponents();
-        jLabel3.setHorizontalAlignment(SwingConstants.CENTER);
+        setExtendedState(MAXIMIZED_BOTH);
     }
 
-    public FrmListaLivro(Supervisor supervisor) {
-        frameConfig();
+    public FrmControleLivro(Supervisor supervisor) {
         initComponents();
+        setExtendedState(MAXIMIZED_BOTH);
         this.supervisor = supervisor;
         modelo = (DefaultTableModel) tabela_livro.getModel();
 
         if (this.supervisor == null) {
             btn_novo.setVisible(false);
             btn_emprestar.setVisible(false);
+            lbl_titulo.setText("Busca de Livros");
         } else {
             btn_reservar.setVisible(false);
         }
@@ -74,7 +69,7 @@ public class FrmListaLivro extends javax.swing.JFrame implements ScreenConfig, L
                 } else {
                     disponibilidade = INDISPONIVEL;
                 }
-                modelo.addRow(new String[]{l.getTitulo(), l.getAutor(), l.getArea(), l.getEditora(), disponibilidade});
+                modelo.addRow(new String[]{l.getTitulo(), l.getInfo()[0], l.getInfo()[1], l.getInfo()[2], disponibilidade});
             }
         }
     }
@@ -93,18 +88,6 @@ public class FrmListaLivro extends javax.swing.JFrame implements ScreenConfig, L
         } else {
             JOptionPane.showMessageDialog(null, "Selecione um livro");
             return false;
-        }
-    }
-
-    @Override
-    public void frameConfig() {
-        FrmListaLivro.this.setUndecorated(true);
-        this.setExtendedState(FrmMenu.MAXIMIZED_BOTH);
-
-        try {
-            this.setIconImage(ImageIO.read(new File("src/br/com/bookriddle/imagens/liphia_icon.png")));
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -171,7 +154,7 @@ public class FrmListaLivro extends javax.swing.JFrame implements ScreenConfig, L
         cb_disponibilidade = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabela_livro = new javax.swing.JTable();
-        jLabel4 = new javax.swing.JLabel();
+        lbl_titulo = new javax.swing.JLabel();
         btn_plus3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -192,6 +175,7 @@ public class FrmListaLivro extends javax.swing.JFrame implements ScreenConfig, L
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Liphia - Busca de Livros");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(237, 250, 251));
 
@@ -300,10 +284,10 @@ public class FrmListaLivro extends javax.swing.JFrame implements ScreenConfig, L
             tabela_livro.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Controle de Livros");
+        lbl_titulo.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        lbl_titulo.setForeground(new java.awt.Color(51, 51, 51));
+        lbl_titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_titulo.setText("Controle de Livros");
 
         btn_plus3.setBackground(new java.awt.Color(227, 6, 19));
         btn_plus3.setPreferredSize(new java.awt.Dimension(196, 29));
@@ -557,13 +541,13 @@ public class FrmListaLivro extends javax.swing.JFrame implements ScreenConfig, L
                         .addGap(0, 9, Short.MAX_VALUE)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(lbl_titulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(45, 45, 45)
-                .addComponent(jLabel4)
+                .addComponent(lbl_titulo)
                 .addGap(37, 37, 37)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -604,7 +588,7 @@ public class FrmListaLivro extends javax.swing.JFrame implements ScreenConfig, L
     }//GEN-LAST:event_btn_detalhesMouseExited
 
     private void btn_novoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_novoMouseClicked
-        new FrmCadastroLivro(this).setVisible(true);
+        new FrmCadastroLivroTeste(this).setVisible(true);
     }//GEN-LAST:event_btn_novoMouseClicked
 
     private void btn_novoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_novoMouseEntered
@@ -712,14 +696,46 @@ public class FrmListaLivro extends javax.swing.JFrame implements ScreenConfig, L
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmListaLivro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmControleLivro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmListaLivro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmControleLivro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmListaLivro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmControleLivro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmListaLivro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmControleLivro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -756,7 +772,7 @@ public class FrmListaLivro extends javax.swing.JFrame implements ScreenConfig, L
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrmListaLivro().setVisible(true);
+                new FrmControleLivro().setVisible(true);
             }
         });
     }
@@ -774,7 +790,6 @@ public class FrmListaLivro extends javax.swing.JFrame implements ScreenConfig, L
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -785,6 +800,7 @@ public class FrmListaLivro extends javax.swing.JFrame implements ScreenConfig, L
     private javax.swing.JLabel lbl_emprestar;
     private javax.swing.JLabel lbl_novo;
     private javax.swing.JLabel lbl_reservar;
+    private javax.swing.JLabel lbl_titulo;
     private javax.swing.JLabel lbl_voltar;
     private javax.swing.JTable tabela_livro;
     private java.awt.TextField txt_busca;

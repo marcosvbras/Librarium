@@ -13,7 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -40,9 +39,9 @@ public class LivroDao implements DBModel {
 
     @Override
     public boolean editar() {
-        String sql = "update " + TABELA_LIVRO + " set titulo = '" + livro.getTitulo() + "', autor = '" + livro.getAutor()
-                + "', area = '" + livro.getArea() + "', edicao = '" + livro.getEdicao() + "', editora = '" 
-                + livro.getEditora() + "', armario = '" + livro.getArmario() + "', prateleira = '" + livro.getPrateleira() 
+        String sql = "update " + TABELA_LIVRO + " set titulo = '" + livro.getTitulo() + "', autor_id = " + livro.getAutorId()
+                + ", area_id = " + livro.getAreaId() + ", edicao = '" + livro.getEdicao() + "', editora_id = " 
+                + livro.getEditoraId() + ", armario = '" + livro.getArmario() + "', prateleira = '" + livro.getPrateleira() 
                 + "', ano = " + livro.getAno() + ", quantidade = " + livro.getQuantidade() + ", paginas = "
                 + livro.getPaginas() + ", url = '" + livro.getUrl() + "', isbn = '" + livro.getIsbn() + "' where id = " + livro.getId();
         
@@ -66,7 +65,6 @@ public class LivroDao implements DBModel {
             stm.executeUpdate(sql);
             stm.close();
             excluirImagem();
-            JOptionPane.showMessageDialog(null, "Livro excluído com sucesso");
             return true;
         } catch(SQLException ex) {
             ex.printStackTrace();
@@ -81,9 +79,9 @@ public class LivroDao implements DBModel {
 
     @Override
     public boolean inserir() {
-        String sql = "insert into " + TABELA_LIVRO + " values(null, '" + livro.getTitulo() + "', '" 
-                + livro.getAutor() + "', '" + livro.getArea() + "', '" + livro.getEdicao() + "', '" 
-                + livro.getEditora() + "', " + livro.getQuantidade() + ", " + livro.getPaginas() + ", '" 
+        String sql = "insert into " + TABELA_LIVRO + " values(null, '" + livro.getTitulo() + "', " 
+                + livro.getAutorId() + ", " + livro.getAreaId() + ", '" + livro.getEdicao() + "', " 
+                + livro.getEditoraId() + ", " + livro.getQuantidade() + ", " + livro.getPaginas() + ", '" 
                 + livro.getArmario() + "', " + livro.getAno() + ", '" + livro.getPrateleira() + "', '" 
                 + livro.getUrl() + "', " + livro.getStatus() + ", '" + livro.getIsbn() + "')";
         
@@ -100,7 +98,10 @@ public class LivroDao implements DBModel {
 
     @Override
     public Object buscar(String clause) {
-        String sql = "select * from " + TABELA_LIVRO + " " + clause;
+        String sql = "select livro.id, livro.titulo, livro.autor_id, livro.area_id, livro.edicao, livro.editora_id, livro.quantidade, livro.paginas, livro.armario, " 
+                + "livro.ano, livro.prateleira, livro.url, livro.status_livro, livro.isbn, autor.nome as autor, area.nome as area, editora.nome as editora from " + TABELA_LIVRO + " join "
+                + AutorDao.TABELA_AUTOR + " on livro.autor_id = autor.id join " + AreaDao.TABELA_AREA + " on livro.area_id = area.id join " + EditoraDao.TABELA_EDITORA
+                + " on livro.editora_id = editora.id " + clause;
         
         try {
             Statement stm = conn.createStatement();
@@ -111,10 +112,10 @@ public class LivroDao implements DBModel {
                 livro.setId(rs.getInt("id"));
                 livro.setIsbn(rs.getString("isbn"));
                 livro.setTitulo(rs.getString("titulo"));
-                livro.setAutor(rs.getString("autor"));
-                livro.setArea(rs.getString("area"));
+                livro.setAutorId(rs.getInt("autor_id"));
+                livro.setAreaId(rs.getInt("area_id"));
                 livro.setEdicao(rs.getString("edicao"));
-                livro.setEditora(rs.getString("editora"));
+                livro.setEditoraId(rs.getInt("editora_id"));
                 livro.setArmario(rs.getString("armario"));
                 livro.setPrateleira(rs.getString("prateleira"));
                 livro.setAno(rs.getInt("ano"));
@@ -122,6 +123,7 @@ public class LivroDao implements DBModel {
                 livro.setQuantidade(rs.getInt("quantidade"));
                 livro.setUrl(rs.getString("url"));
                 livro.setStatus(rs.getInt("status_livro"));
+                livro.setInfo(new String[]{rs.getString("autor"), rs.getString("area"), rs.getString("editora")});
             }
             
             stm.close();
@@ -136,7 +138,10 @@ public class LivroDao implements DBModel {
 
     @Override
     public ArrayList<?> buscarTodos(String clause) {
-        String sql = "select * from " + TABELA_LIVRO + " " + clause;
+        String sql = "select livro.id, livro.titulo, livro.autor_id, livro.area_id, livro.edicao, livro.editora_id, livro.quantidade, livro.paginas, livro.armario, " 
+                + "livro.ano, livro.prateleira, livro.url, livro.status_livro, livro.isbn, autor.nome as autor, area.nome as area, editora.nome as editora from " + TABELA_LIVRO + " join "
+                + AutorDao.TABELA_AUTOR + " on livro.autor_id = autor.id join " + AreaDao.TABELA_AREA + " on livro.area_id = area.id join " + EditoraDao.TABELA_EDITORA
+                + " on livro.editora_id = editora.id " + clause;
         ArrayList<Livro> listLivro = new ArrayList<Livro>();
         
         try {
@@ -148,10 +153,10 @@ public class LivroDao implements DBModel {
                 livro.setId(rs.getInt("id"));
                 livro.setIsbn(rs.getString("isbn"));
                 livro.setTitulo(rs.getString("titulo"));
-                livro.setAutor(rs.getString("autor"));
-                livro.setArea(rs.getString("area"));
+                livro.setAutorId(rs.getInt("autor_id"));
+                livro.setAreaId(rs.getInt("area_id"));
                 livro.setEdicao(rs.getString("edicao"));
-                livro.setEditora(rs.getString("editora"));
+                livro.setEditoraId(rs.getInt("editora_id"));
                 livro.setArmario(rs.getString("armario"));
                 livro.setPrateleira(rs.getString("prateleira"));
                 livro.setAno(rs.getInt("ano"));
@@ -159,6 +164,7 @@ public class LivroDao implements DBModel {
                 livro.setQuantidade(rs.getInt("quantidade"));
                 livro.setUrl(rs.getString("url"));
                 livro.setStatus(rs.getInt("status_livro"));
+                livro.setInfo(new String[]{rs.getString("autor"), rs.getString("area"), rs.getString("editora")});
                 listLivro.add(livro);
             }
             

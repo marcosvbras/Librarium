@@ -7,17 +7,13 @@ package br.com.bookriddle.view;
 
 import br.com.bookriddle.controller.LivroDao;
 import br.com.bookriddle.controller.ReservaDao;
-import br.com.bookriddle.interfaces.ScreenConfig;
 import br.com.bookriddle.interfaces.ListagemModel;
 import br.com.bookriddle.model.Livro;
 import br.com.bookriddle.model.Reserva;
 import br.com.bookriddle.model.Supervisor;
 import java.awt.Color;
-import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -25,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Marcos Vinícius Brás de Oliveira
  */
-public class FrmListaReservas extends javax.swing.JFrame implements ScreenConfig, ListagemModel {
+public class FrmControleReservas extends javax.swing.JFrame implements ListagemModel {
 
     /**
      * Creates new form FrmPrincipal
@@ -35,31 +31,19 @@ public class FrmListaReservas extends javax.swing.JFrame implements ScreenConfig
     private Supervisor supervisor;
     private String[] campo = new String[]{"todos", "livro.titulo", "funcionario.nome"};
 
-    public FrmListaReservas() {
+    public FrmControleReservas() {
         initComponents();
     }
 
-    public FrmListaReservas(Supervisor supervisor) {
-        frameConfig();
+    public FrmControleReservas(Supervisor supervisor) {
         initComponents();
+        setExtendedState(MAXIMIZED_BOTH);
         this.supervisor = supervisor;
         modelo = (DefaultTableModel) tabela_reserva.getModel();
         ReservaDao dao = new ReservaDao();
         listReservas = (ArrayList<Reserva>) dao.buscarTodos("where status_reserva != 0 order by data");
         dao.closeConnection();
         atualizarTabela();
-    }
-
-    @Override
-    public void frameConfig() {
-        FrmListaReservas.this.setUndecorated(true);
-        this.setExtendedState(FrmMenu.MAXIMIZED_BOTH);
-
-        try {
-            this.setIconImage(ImageIO.read(new File("src/br/com/bookriddle/imagens/liphia_icon.png")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -183,6 +167,7 @@ public class FrmListaReservas extends javax.swing.JFrame implements ScreenConfig
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Liphia - Busca de Livros");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(237, 250, 251));
 
@@ -623,14 +608,78 @@ public class FrmListaReservas extends javax.swing.JFrame implements ScreenConfig
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmListaReservas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmControleReservas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmListaReservas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmControleReservas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmListaReservas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmControleReservas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmListaReservas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmControleReservas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -699,7 +748,7 @@ public class FrmListaReservas extends javax.swing.JFrame implements ScreenConfig
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrmListaReservas().setVisible(true);
+                new FrmControleReservas().setVisible(true);
             }
         });
     }

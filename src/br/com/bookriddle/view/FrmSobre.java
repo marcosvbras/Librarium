@@ -5,36 +5,21 @@
  */
 package br.com.bookriddle.view;
 
-import br.com.bookriddle.interfaces.ScreenConfig;
 import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
 import java.net.URI;
-import javax.imageio.ImageIO;
 
 /**
  *
  * @author Marcos
  */
-public class FrmSobre extends javax.swing.JFrame implements ScreenConfig {
+public class FrmSobre extends javax.swing.JFrame {
 
     /**
      * Creates new form FrmSobre
      */
     public FrmSobre() {
         initComponents();
-        frameConfig();
-    }
-    
-    @Override
-    public void frameConfig() {
-        this.setLocationRelativeTo(null);
-        
-        try {
-            this.setIconImage(ImageIO.read(new File("src/br/com/bookriddle/imagens/liphia_icon.png")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        setLocationRelativeTo(null);
     }
 
     /**

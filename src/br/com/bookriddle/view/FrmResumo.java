@@ -7,18 +7,14 @@ package br.com.bookriddle.view;
 
 import br.com.bookriddle.controller.EmprestimoDao;
 import br.com.bookriddle.controller.ReservaDao;
-import br.com.bookriddle.interfaces.ScreenConfig;
-import java.io.File;
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
-import javax.imageio.ImageIO;
 
 /**
  *
  * @author Marcos Vinícius Brás de Oliveira
  */
-public class FrmResumo extends javax.swing.JFrame implements ScreenConfig {
+public class FrmResumo extends javax.swing.JFrame {
 
     /**
      * Creates new form FrmPrincipal
@@ -26,7 +22,7 @@ public class FrmResumo extends javax.swing.JFrame implements ScreenConfig {
     
     public FrmResumo() {
         initComponents();
-        frameConfig();
+        setLocationRelativeTo(null);
         buscarDados();
     }
     
@@ -49,17 +45,6 @@ public class FrmResumo extends javax.swing.JFrame implements ScreenConfig {
         lbl_livro_popular.setText(eDao.buscarMaisPopular());
         lbl_livros_pendentes.setText("" + eDao.countRegisters("where status_devolucao = 1"));
         eDao.closeConnection();
-    }
-    
-    @Override
-    public void frameConfig() {
-        this.setLocationRelativeTo(null);
-        
-        try {
-            this.setIconImage(ImageIO.read(new File("src/br/com/bookriddle/imagens/liphia_icon.png")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
     
     /**

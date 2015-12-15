@@ -5,9 +5,9 @@
  */
 package br.com.bookriddle.view;
 
-import br.com.bookriddle.controller.FuncionarioDao;
+import br.com.bookriddle.controller.EditoraDao;
 import br.com.bookriddle.interfaces.ListagemModel;
-import br.com.bookriddle.model.Funcionario;
+import br.com.bookriddle.model.Editora;
 import br.com.bookriddle.model.Supervisor;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -18,100 +18,106 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Marcos Vinícius Brás de Oliveira
  */
-public class FrmSelecionarFuncionario extends javax.swing.JFrame implements ListagemModel {
+public class FrmSelecionarEditora extends javax.swing.JFrame implements ListagemModel {
 
     /**
-     * Creates new form FrmPrincipal
+     * Creates new form FrmSelecionarAutor
      */
-    
     private DefaultTableModel modelo;
-    private Funcionario funcionario;
-    private ArrayList<Funcionario> listFun;
-    private String[] campo = {"todas", "nome", "matricula", "email"};
+    private Editora editora;
+    private ArrayList<Editora> listEditora;
     private Supervisor sup;
-    private FrmEmprestimoDireto emprestimo;
-    private FrmUsuario usuario;
-    
-    public FrmSelecionarFuncionario() {
+    private FrmCadastroLivroTeste cadlivro;
+    private FrmEditarLivro editarLivro;
+    private FrmVerLivro verLivro;
+
+    public FrmSelecionarEditora() {
         initComponents();
     }
-    
-    // Construtor chamado pela tela de empréstimo direto
-    public FrmSelecionarFuncionario(FrmEmprestimoDireto emprestimo) {
+
+    // Construtor chamado pela tela "Controle de Livros"
+    public FrmSelecionarEditora(FrmCadastroLivroTeste cadlivro) {
         initComponents();
         setLocationRelativeTo(null);
-        this.emprestimo = emprestimo;
+        this.cadlivro = cadlivro;
         modelo = new DefaultTableModel();
-        tabela_funcionario.setModel(modelo);
-        
-        modelo.addColumn("Matrícula");
-        modelo.addColumn("Nome");
-        modelo.addColumn("Email");
-        modelo.addColumn("Telefone");
-        
-        FuncionarioDao dao = new FuncionarioDao();
-        listFun = (ArrayList<Funcionario>)dao.buscarTodos("where status_funcionario != 0 order by nome");
-        dao.closeConnection();
+        tabela_editora.setModel(modelo);
+
+        modelo.addColumn("Editora");
+
+        EditoraDao aDao = new EditoraDao();
+        listEditora = (ArrayList<Editora>) aDao.buscarTodos("where status_editora != 0 order by nome");
+        aDao.closeConnection();
         atualizarTabela();
     }
     
-    // Construtor chamado pela tela FrmUsuario
-    public FrmSelecionarFuncionario(FrmUsuario usuario) {
+    public FrmSelecionarEditora(FrmVerLivro verLivro) {
         initComponents();
         setLocationRelativeTo(null);
-        this.usuario = usuario;
+        this.verLivro = verLivro;
         modelo = new DefaultTableModel();
-        tabela_funcionario.setModel(modelo);
-        
-        modelo.addColumn("Matrícula");
-        modelo.addColumn("Nome");
-        modelo.addColumn("Email");
-        modelo.addColumn("Telefone");
-        
-        FuncionarioDao dao = new FuncionarioDao();
-        listFun = (ArrayList<Funcionario>)dao.buscarTodos("where status_funcionario != 0 order by nome");
-        dao.closeConnection();
+        tabela_editora.setModel(modelo);
+
+        modelo.addColumn("Editora");
+
+        EditoraDao aDao = new EditoraDao();
+        listEditora = (ArrayList<Editora>) aDao.buscarTodos("where status_editora != 0 order by nome");
+        aDao.closeConnection();
         atualizarTabela();
     }
     
+    public FrmSelecionarEditora(FrmEditarLivro editarLivro) {
+        initComponents();
+        setLocationRelativeTo(null);
+        this.editarLivro = editarLivro;
+        modelo = new DefaultTableModel();
+        tabela_editora.setModel(modelo);
+
+        modelo.addColumn("Editora");
+
+        EditoraDao aDao = new EditoraDao();
+        listEditora = (ArrayList<Editora>) aDao.buscarTodos("where status_editora != 0 order by nome");
+        aDao.closeConnection();
+        atualizarTabela();
+    }
+
     @Override
     public void atualizarTabela() {
         modelo.setRowCount(0);
-        if(listFun != null) {
-            for(Funcionario f : listFun) {
-                modelo.addRow(new String[]{f.getMatricula(), f.getNome(), f.getEmail(), f.getTelefone()});
+        if (listEditora != null) {
+            for (Editora e : listEditora) {
+                modelo.addRow(new String[]{e.getNome()});
             }
         }
     }
-    
+
     @Override
     public boolean isSelected() {
-        int count = tabela_funcionario.getSelectedRowCount();
-        
-        if(count > 0) {
-            if(count == 1) {
+        int count = tabela_editora.getSelectedRowCount();
+
+        if (count > 0) {
+            if (count == 1) {
                 return true;
             } else {
-                JOptionPane.showMessageDialog(null, "Selecione apenas um funcionário");
+                JOptionPane.showMessageDialog(null, "Selecione apenas uma editora");
                 return false;
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Selecione uma funcionário");
+            JOptionPane.showMessageDialog(null, "Selecione uma editora");
             return false;
         }
     }
-    
+
     @Override
     public void setList(ArrayList<?> list) {
-        this.listFun = (ArrayList<Funcionario>)list;
-        atualizarTabela();
-    }
-    
-    @Override
-    public void verDetalhes() {
         
     }
-    
+
+    @Override
+    public void verDetalhes() {
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -123,15 +129,15 @@ public class FrmSelecionarFuncionario extends javax.swing.JFrame implements List
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabela_funcionario = new javax.swing.JTable();
+        tabela_editora = new javax.swing.JTable();
         btn_selecionar = new javax.swing.JPanel();
         label_btn2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        cb_condicao = new javax.swing.JComboBox();
         txt_busca = new java.awt.TextField();
         jLabel6 = new javax.swing.JLabel();
+        btn_adicionar = new javax.swing.JLabel();
+        btn_excluir = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Book Riddle - Seleção de Funcionário");
@@ -140,8 +146,8 @@ public class FrmSelecionarFuncionario extends javax.swing.JFrame implements List
 
         jPanel1.setBackground(new java.awt.Color(237, 250, 251));
 
-        tabela_funcionario.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        tabela_funcionario.setModel(new javax.swing.table.DefaultTableModel(
+        tabela_editora.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        tabela_editora.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -152,7 +158,7 @@ public class FrmSelecionarFuncionario extends javax.swing.JFrame implements List
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tabela_funcionario);
+        jScrollPane1.setViewportView(tabela_editora);
 
         btn_selecionar.setBackground(new java.awt.Color(227, 6, 19));
         btn_selecionar.setMaximumSize(new java.awt.Dimension(268, 50));
@@ -178,9 +184,9 @@ public class FrmSelecionarFuncionario extends javax.swing.JFrame implements List
         btn_selecionarLayout.setHorizontalGroup(
             btn_selecionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(btn_selecionarLayout.createSequentialGroup()
-                .addGap(395, 395, 395)
+                .addGap(116, 116, 116)
                 .addComponent(label_btn2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(31, 31, 31))
+                .addGap(112, 112, 112))
         );
         btn_selecionarLayout.setVerticalGroup(
             btn_selecionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -206,14 +212,6 @@ public class FrmSelecionarFuncionario extends javax.swing.JFrame implements List
                 .addContainerGap())
         );
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel3.setText("Pesquisar por");
-
-        cb_condicao.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        cb_condicao.setForeground(new java.awt.Color(51, 51, 51));
-        cb_condicao.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Todas", "Matrícula", "Nome", "Email" }));
-
         txt_busca.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         txt_busca.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txt_busca.addTextListener(new java.awt.event.TextListener() {
@@ -226,42 +224,59 @@ public class FrmSelecionarFuncionario extends javax.swing.JFrame implements List
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 28)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(51, 51, 51));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("Selecione um funcionário");
+        jLabel6.setText("Áreas");
+
+        btn_adicionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/bookriddle/imagens/black_add.png"))); // NOI18N
+        btn_adicionar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_adicionar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_adicionarMouseClicked(evt);
+            }
+        });
+
+        btn_excluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/bookriddle/imagens/white_trash_small.png"))); // NOI18N
+        btn_excluir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_excluir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_excluirMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(217, 217, 217)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cb_condicao, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_busca, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(251, Short.MAX_VALUE))
             .addComponent(btn_selecionar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(txt_busca, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE))
+                .addGap(2, 2, 2)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btn_adicionar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_excluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel6)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cb_condicao, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
-                    .addComponent(txt_busca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txt_busca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_adicionar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(btn_excluir)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(btn_selecionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -281,48 +296,72 @@ public class FrmSelecionarFuncionario extends javax.swing.JFrame implements List
 
     private void txt_buscaTextValueChanged(java.awt.event.TextEvent evt) {//GEN-FIRST:event_txt_buscaTextValueChanged
         String busca = txt_busca.getText();
-        if(!busca.equals("")) {
-            int idx = cb_condicao.getSelectedIndex();
-            String clause = null;
-            
-            if(idx == 0) {
-                clause = "where (" + campo[1] + " like '%" + busca + "%' or " + campo[2] + " like '%" + busca + "%' or "
-                        + campo[3] + " like '%" + busca + "%') and (status_funcionario != 0) order by nome";
-            } else {
-                clause = "where " + campo[idx] + " like '%" + busca + "%' and status_funcionario != 0 order by nome";
-            }
-   
-            FuncionarioDao dao = new FuncionarioDao();
-            listFun = (ArrayList<Funcionario>)dao.buscarTodos(clause);
-            dao.closeConnection();
-            atualizarTabela();
+        String clause = "";
+        
+        if (!busca.equals("")) {
+            clause = "where nome like '%" + busca + "%' order by nome";
         }
+
+        EditoraDao aDao = new EditoraDao();
+        listEditora = (ArrayList<Editora>) aDao.buscarTodos(clause);
+        aDao.closeConnection();
+        atualizarTabela();
     }//GEN-LAST:event_txt_buscaTextValueChanged
 
     private void btn_selecionarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_selecionarMouseClicked
-        if(isSelected()) {
-            if(emprestimo != null) {
-                funcionario = listFun.get(tabela_funcionario.getSelectedRow());
-                emprestimo.setFuncionario(funcionario);
-                dispose();
+        if (isSelected()) {
+            if(cadlivro != null) {
+                cadlivro.setEditora(listEditora.get(tabela_editora.getSelectedRow()));
+            } else if(verLivro != null) {
+                verLivro.setEditora(listEditora.get(tabela_editora.getSelectedRow()));
+            } else if(editarLivro != null) {
+                editarLivro.setEditora(listEditora.get(tabela_editora.getSelectedRow()));
             }
-            
-            if(usuario != null) {
-                funcionario = listFun.get(tabela_funcionario.getSelectedRow());
-                usuario.setFuncionario(funcionario);
-                dispose();
-            }
+            dispose();
         }
     }//GEN-LAST:event_btn_selecionarMouseClicked
 
     private void btn_selecionarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_selecionarMouseEntered
-        btn_selecionar.setBackground(new Color(255,0,0));
+        btn_selecionar.setBackground(new Color(255, 0, 0));
     }//GEN-LAST:event_btn_selecionarMouseEntered
 
     private void btn_selecionarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_selecionarMouseExited
-        btn_selecionar.setBackground(new Color(227,6,19));
+        btn_selecionar.setBackground(new Color(227, 6, 19));
     }//GEN-LAST:event_btn_selecionarMouseExited
-    
+
+    private void btn_adicionarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_adicionarMouseClicked
+        if (!txt_busca.getText().equals("")) {
+            int result = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja cadastrar a editora " + txt_busca.getText() + "?");
+            if (result == 0) {
+                EditoraDao aDao = new EditoraDao(new Editora(txt_busca.getText()));
+                if (aDao.inserir()) {
+                    JOptionPane.showMessageDialog(null, "Nova editora cadastrado com sucesso.");
+                }
+                listEditora = (ArrayList<Editora>)aDao.buscarTodos("where status_editora != 0 order by nome");
+                aDao.closeConnection();
+                atualizarTabela();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Digite no campo de buscas o nome da editora que deseja cadastrar.");
+        }
+    }//GEN-LAST:event_btn_adicionarMouseClicked
+
+    private void btn_excluirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_excluirMouseClicked
+        if(isSelected()) {
+            Editora editora = listEditora.get(tabela_editora.getSelectedRow());
+            int result = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir a editora " + editora.getNome());
+            
+            if(result == 0) {
+                editora.setStatusEditora(0);
+                EditoraDao aDao = new EditoraDao(editora);
+                aDao.excluir();
+                listEditora = (ArrayList<Editora>)aDao.buscarTodos("where status_editora != 0 order by nome");
+                aDao.closeConnection();
+                atualizarTabela();
+            }
+        }
+    }//GEN-LAST:event_btn_excluirMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -340,14 +379,70 @@ public class FrmSelecionarFuncionario extends javax.swing.JFrame implements List
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmSelecionarFuncionario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmSelecionarEditora.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmSelecionarFuncionario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmSelecionarEditora.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmSelecionarFuncionario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmSelecionarEditora.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmSelecionarFuncionario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmSelecionarEditora.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -360,22 +455,22 @@ public class FrmSelecionarFuncionario extends javax.swing.JFrame implements List
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrmSelecionarFuncionario().setVisible(true);
+                new FrmSelecionarEditora().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel btn_adicionar;
+    private javax.swing.JLabel btn_excluir;
     private javax.swing.JPanel btn_selecionar;
-    private javax.swing.JComboBox cb_condicao;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel label_btn2;
-    private javax.swing.JTable tabela_funcionario;
+    private javax.swing.JTable tabela_editora;
     private java.awt.TextField txt_busca;
     // End of variables declaration//GEN-END:variables
 }

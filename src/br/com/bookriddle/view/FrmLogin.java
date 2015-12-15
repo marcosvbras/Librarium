@@ -6,19 +6,15 @@
 package br.com.bookriddle.view;
 
 import br.com.bookriddle.controller.SupervisorDao;
-import br.com.bookriddle.interfaces.ScreenConfig;
 import br.com.bookriddle.model.Supervisor;
 import java.awt.Color;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author Marcos Vinícius Brás de Oliveira
  */
-public class FrmLogin extends javax.swing.JFrame implements ScreenConfig {
+public class FrmLogin extends javax.swing.JFrame {
 
     /**
      * Creates new form FrmPrincipal
@@ -27,31 +23,20 @@ public class FrmLogin extends javax.swing.JFrame implements ScreenConfig {
     public static final int LOGIN_SUPERVISOR = 1;
     public static final int LOGIN_ADMIN = 2;
     private int action;
-    private FrmPrincipal principal;
+    private FrmInicial principal;
     
     public FrmLogin() {
         initComponents();
-        frameConfig();
+        setLocationRelativeTo(null);
         action = LOGIN_ADMIN;
         lbl_tipo.setText("Admin");
     }
     
-    public FrmLogin(FrmPrincipal principal) {
+    public FrmLogin(FrmInicial principal) {
         initComponents();
-        frameConfig();
+        setLocationRelativeTo(null);
         this.principal = principal;
         action = LOGIN_SUPERVISOR;
-    }
-    
-    @Override
-    public void frameConfig() {
-        this.setLocationRelativeTo(null);
-        
-        try {
-            this.setIconImage(ImageIO.read(new File("src/br/com/bookriddle/imagens/liphia_icon.png")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
     
     private String senhaToString(char[] pass) {
@@ -228,7 +213,7 @@ public class FrmLogin extends javax.swing.JFrame implements ScreenConfig {
                 principal.dispose();
                 this.dispose();
             } else {
-                FrmListaUsuario usuario = new FrmListaUsuario(sup);
+                FrmControleUsuario usuario = new FrmControleUsuario(sup);
                 usuario.setVisible(true);
                 this.dispose();
             }

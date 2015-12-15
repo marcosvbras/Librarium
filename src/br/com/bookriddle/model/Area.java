@@ -11,8 +11,23 @@ package br.com.bookriddle.model;
  */
 public class Area {
     
-    private int id;
+    private int id, status_area;
     private String nome;
+    
+    public Area(){}
+    
+    public Area(String nome) {
+        this.nome = nome;
+        this.status_area = 1;
+    }
+    
+    public int getStatusArea() {
+        return status_area;
+    }
+
+    public void setStatusArea(int status_area) {
+        this.status_area = status_area;
+    }
 
     public int getId() {
         return id;
